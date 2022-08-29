@@ -17,6 +17,6 @@
 * Salvar roteiros de outros usuários em uma coleção.
  
 ## Tecnologias
-**Backend**: Python, usando Flask como framework
-**Frontend**: HTML, CSS e Angular (framework de JavaScript)
+**Backend**: Python, usando Flask como framework  
+**Frontend**: HTML, CSS e Angular (framework de JavaScript)  
 **Banco de dados**: MySQL
