@@ -33,10 +33,7 @@ export class MapComponent implements OnInit, AfterViewInit {
   }
 
   initMap() {
-    this.map = L.map(this.mapid, {
-      center: [ 39.8282, -98.5795 ],
-      zoom: 3
-    });
+    this.map = L.map(this.mapid).setView([51.505, -0.09], 13);
 
     this.map.doubleClickZoom.disable();
 
@@ -48,10 +45,12 @@ export class MapComponent implements OnInit, AfterViewInit {
 
     tiles.addTo(this.map);
 
-
     this.map.on('dblclick', this.mapOnDoubleClick, this);
 
-    this.initMarkers();
+    if (this.markers.length) {
+      this.initMarkers();
+      (this.map as L.Map).fitBounds(L.featureGroup(this.markers).getBounds());
+    }
   }
 
   initMarkers() {
