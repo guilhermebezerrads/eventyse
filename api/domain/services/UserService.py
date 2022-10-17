@@ -1,14 +1,16 @@
 from injector import inject
 
+from domain.ports.IUserService import IUserService
 from domain.ports.IUserRepository import IUserRepository
+
 from domain.entities.User import User
 
-class UserService:
+class UserService(IUserService):
     @inject
     def __init__(self, users: IUserRepository):
         self.user_repository: IUserRepository = users
 
-    def already_existis(self, username) -> bool:
+    def already_exists(self, username) -> bool:
         return self.user_repository.already_exists(username)
     
     def add(self, user: User) -> bool:

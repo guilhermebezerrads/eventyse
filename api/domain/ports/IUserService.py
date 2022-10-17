@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from domain.entities.User import User
 
-class IUserRepository(ABC):
+class IUserService(ABC):
     @abstractmethod
     def already_exists(username: int):
         pass
