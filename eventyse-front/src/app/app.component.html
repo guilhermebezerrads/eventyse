@@ -1,4 +1,41 @@
-<nav>
-  <a routerLink="/map">Map</a>
-</nav>
-<router-outlet></router-outlet>
+<div class="header">
+  <mat-toolbar color="primary">
+    <div class="title">
+      <mat-icon>explore</mat-icon>
+      <span>Eventyse</span>
+    </div>
+    <input type="text" class="search" placeholder="Pesquisar por #Tag">
+    <button mat-icon-button [matMenuTriggerFor]="menu" class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+      <img src="assets/palmirinha.png" alt="Avatar">
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item>
+        <mat-icon>person</mat-icon>
+        <span>Perfil</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>map</mat-icon>
+        <span>Meus Roteiros</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>bookmark</mat-icon>
+        <span>Roteiros Salvos</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>message</mat-icon>
+        <span>Mensagens</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>settings</mat-icon>
+        <span>Configurações</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>logout</mat-icon>
+        <span>Sair</span>
+      </button>
+    </mat-menu>
+  </mat-toolbar>
+</div>
+<div class="container">
+  <router-outlet></router-outlet>
+</div>

@@ -1,0 +1,48 @@
+<div class="container">
+  <div class="title">
+    <img [src]="post.author.profileImage" alt="Avatar"> <h1>{{post.title}}</h1>
+  </div>
+  <div class="description">
+    <h3>{{post.description}}</h3>
+  </div>
+  <div class="createDate">
+    {{post.creationDate}}
+  </div>
+  <app-map [markers]="getPostMarkers()" [readonly]="true"></app-map>
+  <div class="tags">
+    <div class="tags-tags"><span *ngFor="let tag of post.tags">#{{tag}}</span></div>
+    <div class="tags-likes">
+      <button mat-icon-button [class.favorite]="isFavorite" (click)="setFavorite()">
+        <mat-icon>favorite</mat-icon>
+      </button>
+      <button mat-icon-button [class.liked]="isLiked" (click)="setLiked()">
+        <mat-icon>thumb_up</mat-icon>
+      </button>
+        {{post.countLike}}
+      <button mat-icon-button [class.disliked]="isDisliked" (click)="setDisliked()">
+        <mat-icon>thumb_down</mat-icon>
+      </button>
+      {{post.countDislike}}
+    </div>
+  </div>
+  <mat-divider></mat-divider>
+  <div *ngFor="let comment of post.comments" class="comment-container">
+    <div class="comment">
+      <img [src]="post.author.profileImage" alt="Avatar">
+      <div class="comment-comment">
+        <div><span class="comment-author">{{comment.author.name}}</span>
+          <span class="comment-createDate">{{comment.createDate}}</span>
+        </div>
+        <span class="comment-description">{{comment.comment}}</span>
+      </div>
+    </div>
+    <mat-divider></mat-divider>
+  </div>
+  <div class="comment-form">
+    <input matInput placeholder="Escreva um comentário">
+    <button mat-icon-button>
+      <mat-icon>send</mat-icon>
+    </button>
+  </div>
+  <mat-divider></mat-divider>
+</div>

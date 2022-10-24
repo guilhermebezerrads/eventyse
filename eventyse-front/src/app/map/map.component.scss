@@ -3,10 +3,8 @@
   width: 300px;
 
   .map-container {
-    margin: 30px;
-
-    width: 500px;
     height: 300px;
+    margin: 1em 0;
   }
 
   .map-frame {
@@ -16,5 +14,10 @@
   #map {
     height: 100%;
   }
-}
 
+  .leaflet-container {
+    border: none;
+    border: solid 1px #ccc;
+    border-radius: 20px;
+  }
+}
