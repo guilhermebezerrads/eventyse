@@ -60,3 +60,7 @@ mat-tab-body {
   width: 100%;
   justify-content: space-between;
 }
+
+.cdk-overlay-container {
+  z-index: 9999;
+}
