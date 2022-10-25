@@ -9,8 +9,8 @@ from flask import request
 # from injector import inject
 import inject
 
-from domain.entities.User import User
-from domain.entities.Error import Error
+from domain.models.User import User
+from domain.models.Error import Error
 
 from domain.interfaces.IUserService import IUserService
 

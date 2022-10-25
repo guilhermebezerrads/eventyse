@@ -1,9 +1,9 @@
+import uuid
+from typing import List
 from dataclasses import dataclass
 from dataclasses_json import dataclass_json, LetterCase
-from typing import List
-import uuid
 
-from domain.entities.Post import Post
+from domain.models.Post import Post
 
 @dataclass_json(letter_case=LetterCase.CAMEL)
 @dataclass(frozen=True)

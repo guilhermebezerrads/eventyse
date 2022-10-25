@@ -3,10 +3,10 @@ from msilib.schema import Error
 from flask import Blueprint, request, Response
 import inject
 import bcrypt
-from domain.entities.Post import Post
+from domain.models.Post import Post
 
-from domain.entities.User import User
-from domain.entities.Error import Error
+from domain.models.User import User
+from domain.models.Error import Error
 from domain.interfaces.IUserService import IUserService
 
 from ..auth import create_token, check_password_hash

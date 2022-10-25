@@ -1,5 +1,5 @@
 from domain.interfaces.IUserRepository import IUserRepository
-from domain.entities.User import User
+from domain.models.User import User
 
 class ListUserRepository(IUserRepository):
     def __init__(self) -> None:

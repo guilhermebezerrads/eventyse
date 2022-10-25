@@ -3,7 +3,7 @@ import inject
 from domain.interfaces.IUserService import IUserService
 from domain.interfaces.IUserRepository import IUserRepository
 
-from domain.entities.User import User
+from domain.models.User import User
 
 class UserService(IUserService):
     @inject.autoparams()

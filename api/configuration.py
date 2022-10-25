@@ -13,7 +13,7 @@ def configure_api(api: Flask) -> None:
 
 def configure_inject(api: Flask) -> None:
     def config(binder: inject.Binder) -> None:
-        binder.bind(IUserRepository, ListUserRepository())
-        binder.bind(IUserService, UserService(ListUserRepository()))
+        binder.bind_to_constructor(IUserRepository, ListUserRepository)
+        binder.bind_to_constructor(IUserService, UserService)
     
     inject.configure(config)
