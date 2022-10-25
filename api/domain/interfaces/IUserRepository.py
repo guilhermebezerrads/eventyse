@@ -3,18 +3,18 @@ from domain.entities.User import User
 
 class IUserRepository(ABC):
     @abstractmethod
-    def already_exists(username: int):
+    def already_exists(self, username: int) -> bool:
         pass
 
     @abstractmethod
-    def add(user: User):
+    def add(self, user: User) -> bool:
         pass
 
     @abstractmethod
-    def find_all():
+    def find_all(self) -> list[User]:
         pass
     
     @abstractmethod
-    def find_by_username(username: int):
+    def find_by_username(self, username: int) -> User:
         pass
     

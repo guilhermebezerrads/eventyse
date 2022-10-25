@@ -1,4 +1,4 @@
-from domain.ports.IUserRepository import IUserRepository
+from domain.interfaces.IUserRepository import IUserRepository
 from domain.entities.User import User
 
 class ListUserRepository(IUserRepository):

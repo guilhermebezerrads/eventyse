@@ -1,14 +1,14 @@
-from injector import inject
+import inject
 
-from domain.ports.IUserService import IUserService
-from domain.ports.IUserRepository import IUserRepository
+from domain.interfaces.IUserService import IUserService
+from domain.interfaces.IUserRepository import IUserRepository
 
 from domain.entities.User import User
 
 class UserService(IUserService):
-    @inject
-    def __init__(self, users: IUserRepository):
-        self.user_repository: IUserRepository = users
+    @inject.autoparams()
+    def __init__(self, user_repository: IUserRepository):
+        self.user_repository: IUserRepository = user_repository
 
     def already_exists(self, username) -> bool:
         return self.user_repository.already_exists(username)
