@@ -3,16 +3,15 @@ from msilib.schema import Error
 from flask import Blueprint, request, Response
 import inject
 import bcrypt
-from domain.models.Post import Post
 
-from domain.models.User import User
+from domain.models.User import User, user_factory
 from domain.models.Error import Error
-from domain.interfaces.IUserService import IUserService
+from domain.services.UserService import UserService
 
 from ..auth import create_token, check_password_hash
 
 @inject.autoparams()
-def create_account_blueprint(user_service: IUserService) -> Blueprint:
+def create_account_blueprint(user_service: UserService) -> Blueprint:
     account_blueprint = Blueprint('account', __name__)
 
     @account_blueprint.route('/register', methods=['POST'])
@@ -24,13 +23,10 @@ def create_account_blueprint(user_service: IUserService) -> Blueprint:
         password_salt: bytes = bcrypt.gensalt()
         password_hash: bytes = bcrypt.hashpw(password, password_salt)
         
-        if user_service.already_exists(username):
+        if user_service.exists(username):
             return Error('Error, username already taken').to_dict(), HTTPStatus.BAD_REQUEST
 
-        post1 = Post('Titulo um')
-        post2 = Post('Titulo dois')
-
-        user = User(name, username, password_hash=password_hash.decode(), password_salt=password_salt.decode(), posts=[post1, post2])
+        user = user_factory(name, username, password_hash, password_salt)
 
         user_service.add(user)
 

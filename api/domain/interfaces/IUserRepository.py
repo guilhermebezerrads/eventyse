@@ -3,7 +3,7 @@ from domain.models.User import User
 
 class IUserRepository(ABC):
     @abstractmethod
-    def already_exists(self, username: int) -> bool:
+    def exists(self, username: str) -> bool:
         pass
 
     @abstractmethod
@@ -15,6 +15,6 @@ class IUserRepository(ABC):
         pass
     
     @abstractmethod
-    def find_by_username(self, username: int) -> User:
+    def find_by_username(self, username: str) -> User:
         pass
     

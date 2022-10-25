@@ -1,23 +1,20 @@
 import datetime
-from http import HTTPStatus
 import jwt
 import os
 import bcrypt
+import inject
 from functools import wraps
 from flask import request
-
-# from injector import inject
-import inject
+from http import HTTPStatus
 
 from domain.models.User import User
 from domain.models.Error import Error
-
-from domain.interfaces.IUserService import IUserService
+from domain.services.UserService import UserService
 
 def token_required(f):
     @wraps(f)
     @inject.autoparams('user_service')
-    def decorated(user_service: IUserService, *args, **kwargs):
+    def decorated(user_service: UserService, *args, **kwargs):
         token = None
         if 'Token' in request.headers.keys():
             token = request.headers['Token']
