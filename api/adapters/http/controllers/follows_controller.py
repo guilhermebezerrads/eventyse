@@ -48,13 +48,13 @@ def create_follows_blueprint(user_service: UserService, follow_service: FollowSe
         if not user_target:
             return Error('Error, target username not found').to_dict(), HTTPStatus.NOT_FOUND
         
-        sucess = follow_service.follow(username, target_username)
+        success = follow_service.follow(username, target_username)
         
-        if not sucess:
+        if not success:
             return Error('already following').to_dict(), HTTPStatus.CONFLICT
 
         return {
-            'message': 'successfull follow'
+            'message': 'successfully followed'
         }, HTTPStatus.OK
     
 
@@ -73,13 +73,13 @@ def create_follows_blueprint(user_service: UserService, follow_service: FollowSe
         if not user_target:
             return Error('Error, target username not found').to_dict(), HTTPStatus.NOT_FOUND
         
-        sucess = follow_service.unfollow(username, target_username)
+        success = follow_service.unfollow(username, target_username)
 
-        if not sucess:
+        if not success:
             return Error('must be a follower to unfollow').to_dict(), HTTPStatus.CONFLICT
  
         return {
-            'message': 'successfull unfollow'
+            'message': 'successfully unfollowed'
         }, HTTPStatus.OK
 
     

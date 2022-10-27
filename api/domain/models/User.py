@@ -13,7 +13,15 @@ class User:
     followers_counter: int
     following_counter: int
 
-def user_factory(name: str, username: str, password_hash: bytes, password_salt: bytes, followers_counter: int = 0, following_counter: int = 0) -> User:
+def user_factory(
+        name: str,
+        username: str, 
+        password_hash: bytes, 
+        password_salt: bytes, 
+        followers_counter: int = 0, 
+        following_counter: int = 0
+    ) -> User:
+
     return User(
         id=str(uuid.uuid4()),
         name=name,

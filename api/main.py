@@ -2,6 +2,7 @@ from flask import Flask
 from adapters.http.controllers.accounts_controller import create_accounts_blueprint
 from adapters.http.controllers.users_controller import create_users_blueprint
 from adapters.http.controllers.follows_controller import create_follows_blueprint
+from adapters.http.controllers.roadmaps_controller import create_roadmaps_blueprint
 from configuration import configure_api, configure_inject
 
 def create_api() -> Flask:
@@ -13,6 +14,7 @@ def create_api() -> Flask:
     api.register_blueprint(create_accounts_blueprint(), url_prefix='/api')
     api.register_blueprint(create_users_blueprint(), url_prefix='/api')
     api.register_blueprint(create_follows_blueprint(), url_prefix='/api')
+    api.register_blueprint(create_roadmaps_blueprint(), url_prefix='/api')
 
     return api
 
