@@ -3,15 +3,7 @@ from domain.models.Roadmap import Roadmap
 
 class IRoadmapRepository(ABC):
     @abstractmethod
-    def add(self, roadmap: Roadmap) -> bool:
-        pass
-
-    @abstractmethod
-    def like(self, username: str, roadmap_id: str) -> bool:
-        pass
-
-    @abstractmethod
-    def deslike(self, username: str, roadmap_id: str) -> bool:
+    def create(self, roadmap: Roadmap) -> Roadmap:
         pass
 
     @abstractmethod
@@ -20,6 +12,22 @@ class IRoadmapRepository(ABC):
     
     @abstractmethod
     def find_by_id(self, roadmap_id: str) -> Roadmap:
+        pass
+    
+    @abstractmethod
+    def is_liked(self, username: str, roadmap_id: str) -> bool:
+        pass
+
+    @abstractmethod
+    def like(self, username: str, roadmap_id: str) -> None:
+        pass
+
+    @abstractmethod
+    def is_desliked(self, username: str, roadmap_id: str) -> bool:
+        pass
+
+    @abstractmethod
+    def deslike(self, username: str, roadmap_id: str) -> None:
         pass
     
     @abstractmethod

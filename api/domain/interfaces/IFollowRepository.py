@@ -3,7 +3,7 @@ from domain.models.User import User
 
 class IFollowRepository(ABC):
     @abstractmethod
-    def already_follow(self, username: str, target_username: str) -> bool:
+    def is_follower(self, username: str, target_username: str) -> bool:
         pass
 
     @abstractmethod

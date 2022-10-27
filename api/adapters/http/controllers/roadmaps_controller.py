@@ -1,113 +1,180 @@
-from email.policy import HTTP
 from http import HTTPStatus
-from lib2to3.pgen2 import token
 from flask import Blueprint, request
 import inject
 
-from domain.models.Roadmap import Roadmap, roadmap_factory
+from domain.exceptions.AlreadyLikedException import AlreadyLikedException
+from domain.exceptions.AlreadyDeslikedException import AlreadyDeslikedException
+from domain.exceptions.MissingFieldException import MissingFieldException
+from domain.exceptions.NotFoundException import NotFoundException
+
+from domain.models.Roadmap import Roadmap
+from domain.models.User import User
 from domain.models.Error import Error
+
 from domain.services.RoadmapService import RoadmapService
+from domain.services.UserService import UserService
 
 from ..auth import token_required
 
 @inject.autoparams()
-def create_roadmaps_blueprint(roadmap_service: RoadmapService) -> Blueprint:
+def create_roadmaps_blueprint(roadmap_service: RoadmapService, user_service: UserService) -> Blueprint:
     roadmaps_blueprint = Blueprint('roadmaps', __name__)
 
     @roadmaps_blueprint.route('/roadmaps', methods=['GET'])
     @token_required
-    def get_all():
+    def get_roadmaps(current_user: User):
         roadmaps: list[Roadmap] = roadmap_service.find_all()
-
         return [roadmap.to_dict() for roadmap in roadmaps], HTTPStatus.OK
     
     
     @roadmaps_blueprint.route('/roadmaps/<roadmap_id>', methods=['GET'])
     @token_required
-    def get_all_by_roadmap_id(roadmap_id: str):
-        roadmap: Roadmap = roadmap_service.find_by_id(roadmap_id)
-
-        if not roadmap:
+    def get_roadmap_by_id(current_user: User, roadmap_id: str):
+        try:
+            roadmap: Roadmap = roadmap_service.find_by_id(roadmap_id)
+        except MissingFieldException:
+            return Error('Error, missing field').to_dict(), HTTPStatus.BAD_REQUEST
+        except NotFoundException:
             return Error('Error, roadmap not found').to_dict(), HTTPStatus.NOT_FOUND 
 
         return roadmap.to_dict(), HTTPStatus.OK
 
-    @roadmaps_blueprint.route('/roadmaps', methods=['POST'])
+
+    @roadmaps_blueprint.route('/roadmaps/user/<username>', methods=['GET'])
     @token_required
-    def add_roadmap():
-        username: str = request.json['username']
-        title: str = request.json['title']
-        description: str = request.json['description']
-        coordinates: list[list[float]] = request.json['coordinates']
-        tags: list[str] = request.json['tags']
-
-        roadmap: Roadmap = roadmap_factory(username, title, description, coordinates, tags)
-
-        if roadmap_service.add(roadmap):
-            return roadmap.to_dict(), HTTPStatus.CREATED
-    
-    @roadmaps_blueprint.route('/roadmaps/like', methods=['PATCH'])
-    @token_required
-    def like_roadmap():
-        username: str = request.json['username']
-        roadmap_id: str = request.json['roadmapId']
-
-        success = roadmap_service.like(username, roadmap_id)
-
-        if not success:
-            return Error('already liked').to_dict(), HTTPStatus.CONFLICT
+    def get_roadmap_by_username(current_user: User, username: str):
+        try:
+            user_roadmaps: list[Roadmap] = roadmap_service.find_all_by_username(username)
+        except MissingFieldException:
+            return Error('Error, missing field').to_dict(), HTTPStatus.BAD_REQUEST
+        except NotFoundException:
+            return Error('Error, user not found').to_dict(), HTTPStatus.NOT_FOUND 
 
         return {
-            'message': 'successfully liked'
+            'roadmaps': [roadmap.to_dict() for roadmap in user_roadmaps]
         }, HTTPStatus.OK
     
-    @roadmaps_blueprint.route('/roadmaps/deslike', methods=['PATCH'])
-    @token_required
-    def deslike_roadmap():
-        username: str = request.json['username']
-        roadmap_id: str = request.json['roadmapId']
-
-        success = roadmap_service.deslike(username, roadmap_id)
-
-        if not success:
-            return Error('already desliked').to_dict(), HTTPStatus.CONFLICT
-
-        return {
-            'message': 'successfully desliked'
-        }, HTTPStatus.OK
 
     @roadmaps_blueprint.route('/roadmaps/following', methods=['GET'])
     @token_required
-    def get_all_by_following():
-        username: str = request.json['username']
+    def get_roadmap_by_following(current_user: User):
+        username: str = current_user.username
 
-        following_roadmaps: list[Roadmap] = roadmap_service.find_all_by_following(username)
+        try:
+            following_roadmaps: list[Roadmap] = roadmap_service.find_all_by_following(username)
+        except MissingFieldException:
+            return Error('Error, missing field').to_dict(), HTTPStatus.BAD_REQUEST
+        except NotFoundException:
+            return Error('Error, user not found').to_dict(), HTTPStatus.NOT_FOUND
 
         return {
             'roadmaps': [roadmap.to_dict() for roadmap in following_roadmaps]
         }, HTTPStatus.OK
 
-    @roadmaps_blueprint.route('/roadmaps/user', methods=['GET'])
-    @token_required
-    def get_all_by_username():
-        username: str = request.json['username']
-
-        user_roadmaps: list[Roadmap] = roadmap_service.find_all_by_username(username)
-
-        return {
-            'roadmaps': [roadmap.to_dict() for roadmap in user_roadmaps]
-        }, HTTPStatus.OK
-
 
     @roadmaps_blueprint.route('/roadmaps/tags', methods=['GET'])
     @token_required
-    def get_all_by_tags():
-        tags: list[str] = request.json['tags']
+    def get_roadmaps_by_tags(current_user: User):
+        tags: list[str] = request.json.get('tags')
 
-        tags_roadmaps: list[Roadmap] = roadmap_service.find_all_by_tags(tags)
+        try:
+            tags_roadmaps: list[Roadmap] = roadmap_service.find_all_by_tags(tags)
+        except MissingFieldException:
+            return Error('Error, missing field').to_dict(), HTTPStatus.BAD_REQUEST
 
         return {
             'roadmaps': [roadmap.to_dict() for roadmap in tags_roadmaps]
+        }, HTTPStatus.OK
+
+
+    @roadmaps_blueprint.route('/roadmaps', methods=['POST'])
+    @token_required
+    def create_roadmap(current_user: User):
+        username: str = current_user.username
+        title: str = request.json.get('title')
+        description: str = request.json.get('description')
+        coordinates: list[list[float]] = request.json.get('coordinates')
+        tags: list[str] = request.json.get('tags')
+
+        try:
+            roadmap = roadmap_service.create(username, title, description, coordinates, tags)
+        except MissingFieldException:
+            return Error('Error, missing field').to_dict(), HTTPStatus.BAD_REQUEST
+        except NotFoundException:
+            return Error('Error, user not found').to_dict(), HTTPStatus.NOT_FOUND
+
+        return roadmap.to_dict(), HTTPStatus.CREATED
+
+    
+    @roadmaps_blueprint.route('/roadmaps/like/<roadmap_id>', methods=['GET'])
+    @token_required
+    def is_liked(current_user: User, roadmap_id: str):
+        username: str = current_user.username
+
+        try:
+            roadmap_service.is_liked(username, roadmap_id)
+        except MissingFieldException:
+            return Error('Error, missing field').to_dict(), HTTPStatus.BAD_REQUEST 
+        except NotFoundException:
+            return Error('Roadmap or user not found').to_dict(), HTTPStatus.NOT_FOUND
+        
+        return {
+            'is_liked': is_liked
+        }, HTTPStatus.OK
+    
+
+    @roadmaps_blueprint.route('/roadmaps/like/<roadmap_id>', methods=['PUT'])
+    @token_required
+    def like_roadmap(current_user: User, roadmap_id: str):
+        username: str = current_user.username
+
+        try:
+            roadmap_service.like(username, roadmap_id)
+        except MissingFieldException:
+            return Error('Error, missing field').to_dict(), HTTPStatus.BAD_REQUEST 
+        except NotFoundException:
+            return Error('Roadmap or user not found').to_dict(), HTTPStatus.NOT_FOUND
+        except AlreadyLikedException:
+            return Error('Roadmap already liked').to_dict(), HTTPStatus.CONFLICT
+        
+        return {
+            'message': 'successfully liked'
+        }, HTTPStatus.OK
+
+
+    @roadmaps_blueprint.route('/roadmaps/deslike/<roadmap_id>', methods=['GET'])
+    @token_required
+    def is_desliked(current_user: User, roadmap_id: str):
+        username: str = current_user.username
+
+        try:
+            is_desliked = roadmap_service.deslike(username, roadmap_id)
+        except MissingFieldException:
+            return Error('Error, missing field').to_dict(), HTTPStatus.BAD_REQUEST 
+        except NotFoundException:
+            return Error('Roadmap or user not found').to_dict(), HTTPStatus.NOT_FOUND
+        
+        return {
+            'is_desliked': is_desliked
+        }, HTTPStatus.OK
+
+    
+    @roadmaps_blueprint.route('/roadmaps/deslike/<roadmap_id>', methods=['PUT'])
+    @token_required
+    def deslike_roadmap(current_user: User, roadmap_id: str):
+        username: str = current_user.username
+
+        try:
+            roadmap_service.deslike(username, roadmap_id)
+        except MissingFieldException:
+            return Error('Error, missing field').to_dict(), HTTPStatus.BAD_REQUEST 
+        except NotFoundException:
+            return Error('Roadmap or user not found').to_dict(), HTTPStatus.NOT_FOUND
+        except AlreadyDeslikedException:
+            return Error('Roadmap already desliked').to_dict(), HTTPStatus.CONFLICT
+        
+        return {
+            'message': 'successfully desliked'
         }, HTTPStatus.OK
 
     

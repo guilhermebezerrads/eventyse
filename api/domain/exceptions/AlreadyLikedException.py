@@ -1,0 +1,2 @@
+class AlreadyLikedException(Exception):
+    pass

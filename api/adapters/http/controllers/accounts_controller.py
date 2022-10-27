@@ -1,37 +1,40 @@
+from csv import excel_tab
 from http import HTTPStatus
 from msilib.schema import Error
-from flask import Blueprint, request, Response
+from flask import Blueprint, request
 import inject
-import bcrypt
 
-from domain.models.User import User, user_factory
+from domain.exceptions.MissingFieldException import MissingFieldException
+from domain.exceptions.UsernameAlreadyExistsException import UsernameAlreadyExistsException
+from domain.exceptions.NotFoundException import NotFoundException
+from domain.exceptions.UnauthorizedException import UnauthorizedException
+
+from domain.models.User import User
 from domain.models.Error import Error
+
 from domain.services.UserService import UserService
 
-from ..auth import create_token, check_password_hash
+from ..auth import create_token
 
 @inject.autoparams()
 def create_accounts_blueprint(user_service: UserService) -> Blueprint:
     accounts_blueprint = Blueprint('account', __name__)
 
     @accounts_blueprint.route('/register', methods=['POST'])
-    def register() -> Response:
-        name: str = request.json['name']
-        username: str = request.json['username'].lower()
-        password: bytes = str.encode(request.json['password'])
+    def register():
+        name: str = request.json.get('name')
+        username: str = request.json.get('username').lower()
+        password: str = request.json.get('password')
 
-        password_salt: bytes = bcrypt.gensalt()
-        password_hash: bytes = bcrypt.hashpw(password, password_salt)
-        
-        if user_service.already_exists(username):
-            return Error('Error, username already taken').to_dict(), HTTPStatus.CONFLICT
-
-        user = user_factory(name, username, password_hash, password_salt)
-
-        user_service.add(user)
+        try:
+            user = user_service.create(name, username, password)
+        except MissingFieldException:
+            return Error('Error, missing field').to_dict(), HTTPStatus.BAD_REQUEST
+        except UsernameAlreadyExistsException:
+            return Error('Error, username already taken').to_dict(), HTTPStatus.CONFLICT 
 
         token = create_token(user)
-
+        
         return {
             'username': user.username,
             'token': token
@@ -39,16 +42,17 @@ def create_accounts_blueprint(user_service: UserService) -> Blueprint:
 
 
     @accounts_blueprint.route('/login', methods=['POST'])
-    def login() -> Response:
-        username: str = request.json['username']
-        try_password: str = request.json['password']
+    def login():
+        username: str = request.json.get('username')
+        try_password: str = request.json.get('password')
 
-        user: User = user_service.find_by_username(username)
-
-        if not user:
+        try:
+            user: User = user_service.login(username, try_password)
+        except MissingFieldException:
+            return Error('Error, missing field').to_dict(), HTTPStatus.BAD_REQUEST
+        except NotFoundException:
             return Error('Error, invalid username').to_dict(), HTTPStatus.NOT_FOUND
-        
-        if not check_password_hash(user, try_password):
+        except UnauthorizedException:
             return Error('Error, invalid password').to_dict(), HTTPStatus.UNAUTHORIZED
 
         token = create_token(user)

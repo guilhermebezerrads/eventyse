@@ -1,8 +1,7 @@
-import datetime
 import jwt
 import os
-import bcrypt
 import inject
+import datetime
 from functools import wraps
 from flask import request
 from http import HTTPStatus
@@ -33,14 +32,8 @@ def token_required(f):
             return Error("authentication token expired").to_dict(), HTTPStatus.UNAUTHORIZED
         except:
             return Error('something went wrong').to_dict(), HTTPStatus.INTERNAL_SERVER_ERROR
-        return f(*args, **kwargs)
+        return f(current_user, *args, **kwargs)
     return decorated
-
-
-def check_password_hash(user: User, try_password: str):
-    try_password_hash = bcrypt.hashpw(try_password.encode(), user.password_salt.encode())
-    return try_password_hash.decode() == user.password_hash
-
 
 def create_token(user: User):
     token = jwt.encode(

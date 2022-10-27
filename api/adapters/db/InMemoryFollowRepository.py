@@ -2,6 +2,7 @@ import inject
 
 from domain.interfaces.IUserRepository import IUserRepository
 from domain.interfaces.IFollowRepository import IFollowRepository
+
 from domain.models.User import User
 
 class InMemoryFollowRepository(IFollowRepository):
@@ -10,16 +11,13 @@ class InMemoryFollowRepository(IFollowRepository):
         self.followers: list[tuple[str, str]] = []
         self.users: IUserRepository = users
     
-    def already_follow(self, username: str, target_username: str) -> bool:
+    def is_follower(self, username: str, target_username: str) -> bool:
         for u, t in self.followers:
             if (u == username and t == target_username):
                 return True
         return False
 
-    def follow(self, username: str, target_username: str) -> bool:
-        if self.already_follow(username, target_username):
-            return False
-        
+    def follow(self, username: str, target_username: str) -> bool:        
         self.followers.append((username, target_username))
 
         user: User = self.users.find_by_username(username)
@@ -31,17 +29,15 @@ class InMemoryFollowRepository(IFollowRepository):
         return True
 
     def unfollow(self, username: str, target_username: str) -> bool:
-        if self.already_follow(username, target_username):
-            self.followers.remove((username, target_username))
+        self.followers.remove((username, target_username))
 
-            user: User = self.users.find_by_username(username)
-            target_user: User = self.users.find_by_username(target_username)
+        user: User = self.users.find_by_username(username)
+        target_user: User = self.users.find_by_username(target_username)
 
-            user.following_counter -= 1
-            target_user.followers_counter -= 1
-            return True
+        user.following_counter -= 1
+        target_user.followers_counter -= 1
+        return True
         
-        return False
     
     def find_all_followers(self, username: str) -> list[User]:
         followers = []

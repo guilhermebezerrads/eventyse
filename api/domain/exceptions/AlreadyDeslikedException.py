@@ -1,0 +1,2 @@
+class AlreadyDeslikedException(Exception):
+    pass
