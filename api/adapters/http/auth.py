@@ -29,6 +29,8 @@ def token_required(f):
             current_user = user_service.find_by_username(data['username'])
             if not current_user:
                 return Error("invalid authentication token").to_dict(), HTTPStatus.UNAUTHORIZED
+        except jwt.exceptions.ExpiredSignatureError:
+            return Error("authentication token expired").to_dict(), HTTPStatus.UNAUTHORIZED
         except:
             return Error('something went wrong').to_dict(), HTTPStatus.INTERNAL_SERVER_ERROR
         return f(*args, **kwargs)

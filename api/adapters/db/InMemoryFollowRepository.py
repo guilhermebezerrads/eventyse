@@ -1,10 +1,10 @@
 import inject
 
 from domain.interfaces.IUserRepository import IUserRepository
-from domain.interfaces.IFollowerRepository import IFollowerRepository
+from domain.interfaces.IFollowRepository import IFollowRepository
 from domain.models.User import User
 
-class ListFollowerRepository(IFollowerRepository):
+class InMemoryFollowRepository(IFollowRepository):
     @inject.autoparams()
     def __init__(self, users: IUserRepository) -> None:
         self.followers: list[tuple[str, str]] = []
@@ -16,7 +16,7 @@ class ListFollowerRepository(IFollowerRepository):
                 return True
         return False
 
-    def add_follow(self, username: str, target_username: str) -> bool:
+    def follow(self, username: str, target_username: str) -> bool:
         if self.already_follow(username, target_username):
             return False
         
@@ -30,7 +30,7 @@ class ListFollowerRepository(IFollowerRepository):
 
         return True
 
-    def remove_follow(self, username: str, target_username: str) -> bool:
+    def unfollow(self, username: str, target_username: str) -> bool:
         if self.already_follow(username, target_username):
             self.followers.remove((username, target_username))
 

@@ -1,17 +1,17 @@
 from domain.interfaces.IUserRepository import IUserRepository
 from domain.models.User import User
 
-class ListUserRepository(IUserRepository):
+class InMemoryUserRepository(IUserRepository):
     def __init__(self) -> None:
         self.users: list[User] = []
 
-    def exists(self, username) -> bool:
+    def already_exists(self, username) -> bool:
         for user in self.users:
             if user.username == username: return True
         return False
 
     def add(self, user: User) -> bool:
-        if self.exists(user.username): 
+        if self.already_exists(user.username): 
             return False
         
         self.users.append(user)

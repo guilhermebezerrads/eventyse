@@ -11,10 +11,10 @@ from domain.services.UserService import UserService
 from ..auth import create_token, check_password_hash
 
 @inject.autoparams()
-def create_account_blueprint(user_service: UserService) -> Blueprint:
-    account_blueprint = Blueprint('account', __name__)
+def create_accounts_blueprint(user_service: UserService) -> Blueprint:
+    accounts_blueprint = Blueprint('account', __name__)
 
-    @account_blueprint.route('/register', methods=['POST'])
+    @accounts_blueprint.route('/register', methods=['POST'])
     def register() -> Response:
         name: str = request.json['name']
         username: str = request.json['username'].lower()
@@ -23,8 +23,8 @@ def create_account_blueprint(user_service: UserService) -> Blueprint:
         password_salt: bytes = bcrypt.gensalt()
         password_hash: bytes = bcrypt.hashpw(password, password_salt)
         
-        if user_service.exists(username):
-            return Error('Error, username already taken').to_dict(), HTTPStatus.BAD_REQUEST
+        if user_service.already_exists(username):
+            return Error('Error, username already taken').to_dict(), HTTPStatus.CONFLICT
 
         user = user_factory(name, username, password_hash, password_salt)
 
@@ -38,7 +38,7 @@ def create_account_blueprint(user_service: UserService) -> Blueprint:
         }, HTTPStatus.CREATED
 
 
-    @account_blueprint.route('/login', methods=['POST'])
+    @accounts_blueprint.route('/login', methods=['POST'])
     def login() -> Response:
         username: str = request.json['username']
         try_password: str = request.json['password']
@@ -58,4 +58,4 @@ def create_account_blueprint(user_service: UserService) -> Blueprint:
             'token': token
         }, HTTPStatus.OK
 
-    return account_blueprint
+    return accounts_blueprint

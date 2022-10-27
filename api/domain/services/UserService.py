@@ -9,8 +9,8 @@ class UserService():
     def __init__(self, user_repository: IUserRepository):
         self.user_repository: IUserRepository = user_repository
 
-    def exists(self, username) -> bool:
-        return self.user_repository.exists(username)
+    def already_exists(self, username) -> bool:
+        return self.user_repository.already_exists(username)
     
     def add(self, user: User) -> bool:
         return self.user_repository.add(user)

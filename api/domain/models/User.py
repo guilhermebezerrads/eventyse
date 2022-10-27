@@ -1,6 +1,6 @@
 import uuid
-from dataclasses import dataclass
-from dataclasses_json import dataclass_json, LetterCase
+from dataclasses import dataclass, field
+from dataclasses_json import dataclass_json, LetterCase, config
 
 @dataclass_json(letter_case=LetterCase.CAMEL)
 @dataclass
@@ -8,8 +8,8 @@ class User:
     id: str
     name: str
     username: str
-    password_hash: str
-    password_salt: str
+    password_hash: str = field(metadata=config(exclude=lambda x:True))
+    password_salt: str = field(metadata=config(exclude=lambda x:True))
     followers_counter: int
     following_counter: int
 
