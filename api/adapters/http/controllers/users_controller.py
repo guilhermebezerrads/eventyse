@@ -6,7 +6,6 @@ from domain.exceptions.MissingFieldException import MissingFieldException
 from domain.exceptions.NotFoundException import NotFoundException
 
 from domain.models.User import User
-from domain.models.Error import Error
 
 from domain.services.FollowService import FollowService
 from domain.services.UserService import UserService
@@ -27,13 +26,7 @@ def create_users_blueprint(user_service: UserService, follow_service: FollowServ
     @users_blueprint.route('/users/<username>', methods=['GET'])
     @token_required
     def get_user(current_user: User, username: str):
-        try:
-            user: User = user_service.find_by_username(username)
-        except MissingFieldException:
-            return Error('error, missing field').to_dict(), HTTPStatus.BAD_REQUEST
-        except NotFoundException:
-            return Error('error, username not found').to_dict(), HTTPStatus.NOT_FOUND
-        
+        user: User = user_service.find_by_username(username)
         return user.to_dict(), HTTPStatus.OK
 
     return users_blueprint

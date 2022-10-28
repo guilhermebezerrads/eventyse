@@ -2,14 +2,7 @@ from http import HTTPStatus
 from flask import Blueprint, request
 import inject
 
-from domain.exceptions.AlreadyFollowException import AlreadyFollowException
-from domain.exceptions.NotFollowerException import NotFollowerException
-from domain.exceptions.MissingFieldException import MissingFieldException
-from domain.exceptions.NotFoundException import NotFoundException
-from domain.exceptions.SameUserException import SameUserException
-
 from domain.models.User import User
-from domain.models.Error import Error
 
 from domain.services.FollowService import FollowService
 from domain.services.UserService import UserService
@@ -25,14 +18,7 @@ def create_follows_blueprint(user_service: UserService, follow_service: FollowSe
     def is_follower(current_user: User, target_username: str):
         username: str = current_user.username
 
-        try:
-            is_follower = follow_service.is_follower(username, target_username)
-        except MissingFieldException:
-            return Error('error, missing field').to_dict(), HTTPStatus.BAD_REQUEST
-        except SameUserException:
-            return Error('error, usernames must be different').to_dict(), HTTPStatus.BAD_REQUEST
-        except NotFoundException:
-            return Error('error, some user not found').to_dict(), HTTPStatus.NOT_FOUND 
+        is_follower = follow_service.is_follower(username, target_username)
 
         return {
             'isFollower': is_follower
@@ -44,16 +30,7 @@ def create_follows_blueprint(user_service: UserService, follow_service: FollowSe
     def follow(current_user: User, target_username: str):
         username: str = current_user.username
     
-        try:
-            follow_service.follow(username, target_username)
-        except MissingFieldException:
-            return Error('error, missing field').to_dict(), HTTPStatus.BAD_REQUEST
-        except SameUserException:
-            return Error('error, usernames must be different').to_dict(), HTTPStatus.BAD_REQUEST
-        except NotFoundException:
-            return Error('error, some user not found').to_dict(), HTTPStatus.NOT_FOUND 
-        except AlreadyFollowException:
-            return Error('already following').to_dict(), HTTPStatus.CONFLICT
+        follow_service.follow(username, target_username)
         
         return {
             'message': 'successfully followed'
@@ -65,16 +42,7 @@ def create_follows_blueprint(user_service: UserService, follow_service: FollowSe
     def unfollow(current_user: User, target_username: str):
         username: str = current_user.username
     
-        try:
-            follow_service.unfollow(username, target_username)
-        except MissingFieldException:
-            return Error('error, missing field').to_dict(), HTTPStatus.BAD_REQUEST
-        except SameUserException:
-            return Error('error, usernames must be different').to_dict(), HTTPStatus.BAD_REQUEST
-        except NotFoundException:
-            return Error('error, some user not found').to_dict(), HTTPStatus.NOT_FOUND 
-        except NotFollowerException:
-            return Error('must be a follower to unfollow').to_dict(), HTTPStatus.CONFLICT
+        follow_service.unfollow(username, target_username)
         
         return {
             'message': 'successfully unfollowed'
@@ -84,12 +52,7 @@ def create_follows_blueprint(user_service: UserService, follow_service: FollowSe
     @follows_blueprint.route('/users/<username>/followers', methods=['GET'])
     @token_required
     def get_user_followers(current_user: User, username: str):
-        try:
-            followers = follow_service.find_all_followers(username)
-        except MissingFieldException:
-            return Error('error, missing field').to_dict(), HTTPStatus.BAD_REQUEST
-        except NotFoundException:
-            return Error('error, username not found').to_dict(), HTTPStatus.NOT_FOUND
+        followers = follow_service.find_all_followers(username)
 
         return {
             'username': username,
@@ -101,12 +64,7 @@ def create_follows_blueprint(user_service: UserService, follow_service: FollowSe
     @follows_blueprint.route('/users/<username>/following', methods=['GET'])
     @token_required
     def get_user_following(current_user: User, username: str):
-        try:
-            following = follow_service.find_all_following(username)
-        except MissingFieldException:
-            return Error('error, missing field').to_dict(), HTTPStatus.BAD_REQUEST
-        except NotFoundException:
-            return Error('error, username not found').to_dict(), HTTPStatus.NOT_FOUND
+        following = follow_service.find_all_following(username)
 
         return {
             'username': username,

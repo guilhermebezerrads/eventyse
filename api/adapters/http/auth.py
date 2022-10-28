@@ -1,37 +1,37 @@
+from tokenize import Token
 import jwt
 import os
 import inject
 import datetime
 from functools import wraps
 from flask import request
-from http import HTTPStatus
+
+from domain.exceptions.TokenException import TokenException
 
 from domain.models.User import User
-from domain.models.Error import Error
-from domain.services.UserService import UserService
+
+from domain.interfaces.IUserRepository import IUserRepository
 
 def token_required(f):
     @wraps(f)
-    @inject.autoparams('user_service')
-    def decorated(user_service: UserService, *args, **kwargs):
+    @inject.autoparams('user_repository')
+    def decorated(user_repository: IUserRepository, *args, **kwargs):
         token = None
         if 'Token' in request.headers.keys():
             token = request.headers['Token']
         if not token:
-            return Error('authentication token is missing').to_dict(), HTTPStatus.UNAUTHORIZED
+            raise TokenException('authentication token is missing')
         try:
             data = jwt.decode(
                 token, 
                 os.environ.get('SECRET_KEY'),
                 algorithms="HS256"
             )
-            current_user = user_service.find_by_username(data['username'])
+            current_user = user_repository.find_by_username(data['username'])
             if not current_user:
-                return Error("invalid authentication token").to_dict(), HTTPStatus.UNAUTHORIZED
+                raise TokenException('invalid authentication token')
         except jwt.exceptions.ExpiredSignatureError:
-            return Error("authentication token expired").to_dict(), HTTPStatus.UNAUTHORIZED
-        except:
-            return Error('something went wrong').to_dict(), HTTPStatus.INTERNAL_SERVER_ERROR
+            raise TokenException('authentication token expired')
         return f(current_user, *args, **kwargs)
     return decorated
 

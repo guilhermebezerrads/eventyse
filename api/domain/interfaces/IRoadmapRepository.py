@@ -47,5 +47,5 @@ class IRoadmapRepository(ABC):
         pass
 
     @abstractmethod
-    def find_all_by_tags(self, tag: list[str]) -> list[Roadmap]:
+    def find_all_by_tags(self, tags: list[str]) -> list[Roadmap]:
         pass

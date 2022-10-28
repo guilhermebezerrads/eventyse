@@ -10,7 +10,6 @@ from domain.exceptions.MissingFieldException import MissingFieldException
 from domain.exceptions.NotFoundException import NotFoundException
 
 from domain.models.User import User
-from domain.models.Error import Error
 
 from domain.services.RoadmapService import RoadmapService
 
@@ -25,12 +24,7 @@ def create_rates_blueprint(roadmap_service: RoadmapService) -> Blueprint:
     def is_roadmap_liked(current_user: User, roadmap_id: str):
         username: str = current_user.username
 
-        try:
-            is_liked = roadmap_service.is_liked(username, roadmap_id)
-        except MissingFieldException:
-            return Error('error, missing field').to_dict(), HTTPStatus.BAD_REQUEST 
-        except NotFoundException:
-            return Error('roadmap or user not found').to_dict(), HTTPStatus.NOT_FOUND
+        is_liked = roadmap_service.is_liked(username, roadmap_id)
         
         return {
             'isLiked': is_liked
@@ -41,15 +35,8 @@ def create_rates_blueprint(roadmap_service: RoadmapService) -> Blueprint:
     @token_required
     def add_like_in_roadmap(current_user: User, roadmap_id: str):
         username: str = current_user.username
-
-        try:
-            roadmap_service.add_like(username, roadmap_id)
-        except MissingFieldException:
-            return Error('error, missing field').to_dict(), HTTPStatus.BAD_REQUEST 
-        except NotFoundException:
-            return Error('roadmap or user not found').to_dict(), HTTPStatus.NOT_FOUND
-        except AlreadyLikedException:
-            return Error('roadmap already liked').to_dict(), HTTPStatus.CONFLICT
+        
+        roadmap_service.add_like(username, roadmap_id)
         
         return {
             'message': 'successfully liked'
@@ -61,15 +48,8 @@ def create_rates_blueprint(roadmap_service: RoadmapService) -> Blueprint:
     def remove_like_in_roadmap(current_user: User, roadmap_id: str):
         username: str = current_user.username
 
-        try:
-            roadmap_service.remove_like(username, roadmap_id)
-        except MissingFieldException:
-            return Error('error, missing field').to_dict(), HTTPStatus.BAD_REQUEST 
-        except NotFoundException:
-            return Error('roadmap or user not found').to_dict(), HTTPStatus.NOT_FOUND
-        except NotLikedException:
-            return Error('roadmap must to be liked').to_dict(), HTTPStatus.CONFLICT
-        
+        roadmap_service.remove_like(username, roadmap_id)
+   
         return {
             'message': 'like successfully removed'
         }, HTTPStatus.OK
@@ -80,12 +60,7 @@ def create_rates_blueprint(roadmap_service: RoadmapService) -> Blueprint:
     def is_roadmap_disliked(current_user: User, roadmap_id: str):
         username: str = current_user.username
 
-        try:
-            is_disliked = roadmap_service.is_disliked(username, roadmap_id)
-        except MissingFieldException:
-            return Error('error, missing field').to_dict(), HTTPStatus.BAD_REQUEST 
-        except NotFoundException:
-            return Error('roadmap or user not found').to_dict(), HTTPStatus.NOT_FOUND
+        is_disliked = roadmap_service.is_disliked(username, roadmap_id)
         
         return {
             'isDisliked': is_disliked
@@ -97,14 +72,7 @@ def create_rates_blueprint(roadmap_service: RoadmapService) -> Blueprint:
     def add_dislike_in_roadmap(current_user: User, roadmap_id: str):
         username: str = current_user.username
 
-        try:
-            roadmap_service.add_dislike(username, roadmap_id)
-        except MissingFieldException:
-            return Error('error, missing field').to_dict(), HTTPStatus.BAD_REQUEST 
-        except NotFoundException:
-            return Error('roadmap or user not found').to_dict(), HTTPStatus.NOT_FOUND
-        except AlreadyDislikedException:
-            return Error('roadmap already disliked').to_dict(), HTTPStatus.CONFLICT
+        roadmap_service.add_dislike(username, roadmap_id)
         
         return {
             'message': 'successfully disliked'
@@ -116,14 +84,7 @@ def create_rates_blueprint(roadmap_service: RoadmapService) -> Blueprint:
     def remove_dislike_in_roadmap(current_user: User, roadmap_id: str):
         username: str = current_user.username
 
-        try:
-            roadmap_service.remove_dislike(username, roadmap_id)
-        except MissingFieldException:
-            return Error('error, missing field').to_dict(), HTTPStatus.BAD_REQUEST 
-        except NotFoundException:
-            return Error('roadmap or user not found').to_dict(), HTTPStatus.NOT_FOUND
-        except NotDislikedException:
-            return Error('roadmap must to be disliked').to_dict(), HTTPStatus.CONFLICT
+        roadmap_service.remove_dislike(username, roadmap_id)
         
         return {
             'message': 'dislike successfully removed'

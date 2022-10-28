@@ -6,6 +6,10 @@ from adapters.http.controllers.follows_controller import create_follows_blueprin
 from adapters.http.controllers.roadmaps_controller import create_roadmaps_blueprint
 from adapters.http.controllers.rate_controller import create_rates_blueprint
 from adapters.http.controllers.comments_controller import create_comment_blueprint
+from adapters.http.controllers.exceptions_controller import create_exceptions_blueprint
+
+from domain.exceptions.MissingFieldException import MissingFieldException
+from http import HTTPStatus
 
 from configuration import configure_api, configure_inject
 
@@ -15,6 +19,8 @@ def create_api() -> Flask:
     configure_api(api)
     configure_inject(api)
 
+    api.register_blueprint(create_exceptions_blueprint())
+    
     api.register_blueprint(create_accounts_blueprint(), url_prefix='/api')
     api.register_blueprint(create_users_blueprint(), url_prefix='/api')
     api.register_blueprint(create_follows_blueprint(), url_prefix='/api')

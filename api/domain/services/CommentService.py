@@ -19,12 +19,12 @@ class CommentService():
 
     def create(self, username: str, roadmap_id: str, text: str) -> Comment:
         if not username or not roadmap_id or not text:
-            raise MissingFieldException
+            raise MissingFieldException('missing username, roadmap_id or text field')
         
         user = self.user_repository.find_by_username(username)
         roadmap = self.roadmap_repository.find_by_id(roadmap_id)
         if not user or not roadmap:
-            raise NotFoundException
+            raise NotFoundException('roadmap not found')
         
         comment = comment_factory(username, roadmap_id, text)
         return self.comment_repository.create(comment)
@@ -32,10 +32,10 @@ class CommentService():
 
     def find_all_by_roadmap_id(self, roadmap_id: str) -> list[Comment]:
         if not roadmap_id:
-            return MissingFieldException
+            return MissingFieldException('missing roadmap_id field')
         
         roadmap = self.roadmap_repository.find_by_id(roadmap_id)
         if not roadmap:
-            raise NotFoundException
+            raise NotFoundException('roadmap not found')
 
         return self.comment_repository.find_all_by_roadmap_id(roadmap_id)

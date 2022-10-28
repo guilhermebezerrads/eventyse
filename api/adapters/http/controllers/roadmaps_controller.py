@@ -9,7 +9,6 @@ from domain.exceptions.NotFoundException import NotFoundException
 
 from domain.models.Roadmap import Roadmap
 from domain.models.User import User
-from domain.models.Error import Error
 
 from domain.services.RoadmapService import RoadmapService
 
@@ -28,12 +27,7 @@ def create_roadmaps_blueprint(roadmap_service: RoadmapService) -> Blueprint:
         coordinates: list[list[float]] = request.json.get('coordinates')
         tags: list[str] = request.json.get('tags')
 
-        try:
-            roadmap = roadmap_service.create(username, title, description, coordinates, tags)
-        except MissingFieldException:
-            return Error('error, missing field').to_dict(), HTTPStatus.BAD_REQUEST
-        except NotFoundException:
-            return Error('error, user not found').to_dict(), HTTPStatus.NOT_FOUND
+        roadmap = roadmap_service.create(username, title, description, coordinates, tags)
 
         return roadmap.to_dict(), HTTPStatus.CREATED
 
@@ -48,12 +42,7 @@ def create_roadmaps_blueprint(roadmap_service: RoadmapService) -> Blueprint:
     @roadmaps_blueprint.route('/roadmaps/<roadmap_id>', methods=['GET'])
     @token_required
     def get_roadmap_by_id(current_user: User, roadmap_id: str):
-        try:
-            roadmap: Roadmap = roadmap_service.find_by_id(roadmap_id)
-        except MissingFieldException:
-            return Error('error, missing field').to_dict(), HTTPStatus.BAD_REQUEST
-        except NotFoundException:
-            return Error('error, roadmap not found').to_dict(), HTTPStatus.NOT_FOUND 
+        roadmap: Roadmap = roadmap_service.find_by_id(roadmap_id)
 
         return roadmap.to_dict(), HTTPStatus.OK
 
@@ -61,12 +50,7 @@ def create_roadmaps_blueprint(roadmap_service: RoadmapService) -> Blueprint:
     @roadmaps_blueprint.route('/roadmaps/user/<username>', methods=['GET'])
     @token_required
     def get_roadmap_by_username(current_user: User, username: str):
-        try:
-            user_roadmaps: list[Roadmap] = roadmap_service.find_all_by_username(username)
-        except MissingFieldException:
-            return Error('error, missing field').to_dict(), HTTPStatus.BAD_REQUEST
-        except NotFoundException:
-            return Error('error, user not found').to_dict(), HTTPStatus.NOT_FOUND 
+        user_roadmaps: list[Roadmap] = roadmap_service.find_all_by_username(username)
 
         return {
             'roadmaps': [roadmap.to_dict() for roadmap in user_roadmaps]
@@ -78,12 +62,7 @@ def create_roadmaps_blueprint(roadmap_service: RoadmapService) -> Blueprint:
     def get_roadmap_by_following(current_user: User):
         username: str = current_user.username
 
-        try:
-            following_roadmaps: list[Roadmap] = roadmap_service.find_all_by_following(username)
-        except MissingFieldException:
-            return Error('error, missing field').to_dict(), HTTPStatus.BAD_REQUEST
-        except NotFoundException:
-            return Error('error, user not found').to_dict(), HTTPStatus.NOT_FOUND
+        following_roadmaps: list[Roadmap] = roadmap_service.find_all_by_following(username)
 
         return {
             'roadmaps': [roadmap.to_dict() for roadmap in following_roadmaps]
@@ -95,10 +74,7 @@ def create_roadmaps_blueprint(roadmap_service: RoadmapService) -> Blueprint:
     def get_roadmaps_by_tags(current_user: User):
         tags: list[str] = request.json.get('tags')
 
-        try:
-            tags_roadmaps: list[Roadmap] = roadmap_service.find_all_by_tags(tags)
-        except MissingFieldException:
-            return Error('error, missing field').to_dict(), HTTPStatus.BAD_REQUEST
+        tags_roadmaps: list[Roadmap] = roadmap_service.find_all_by_tags(tags)
 
         return {
             'roadmaps': [roadmap.to_dict() for roadmap in tags_roadmaps]
