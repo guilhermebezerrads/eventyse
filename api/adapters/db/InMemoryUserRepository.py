@@ -8,7 +8,6 @@ class InMemoryUserRepository(IUserRepository):
 
     def create(self, user: User) -> User:        
         self.users.append(user)
-
         return user
     
     def find_all(self) -> list[User]:

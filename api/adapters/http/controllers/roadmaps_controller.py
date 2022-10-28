@@ -17,7 +17,7 @@ from domain.services.UserService import UserService
 from ..auth import token_required
 
 @inject.autoparams()
-def create_roadmaps_blueprint(roadmap_service: RoadmapService, user_service: UserService) -> Blueprint:
+def create_roadmaps_blueprint(roadmap_service: RoadmapService) -> Blueprint:
     roadmaps_blueprint = Blueprint('roadmaps', __name__)
 
     @roadmaps_blueprint.route('/roadmaps', methods=['GET'])

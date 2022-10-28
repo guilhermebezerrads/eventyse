@@ -26,7 +26,6 @@ class FollowService():
 
         current_user: User = self.user_repository.find_by_username(username)
         target_user: User = self.user_repository.find_by_username(target_username)
-
         if not current_user or not target_user:
             raise NotFoundException
         
@@ -41,7 +40,6 @@ class FollowService():
         
         current_user: User = self.user_repository.find_by_username(username)
         target_user: User = self.user_repository.find_by_username(target_username)
-
         if not current_user or not target_user:
             raise NotFoundException
         
@@ -59,7 +57,6 @@ class FollowService():
 
         current_user: User = self.user_repository.find_by_username(username)
         target_user: User = self.user_repository.find_by_username(target_username)
-        
         if not current_user or not target_user:
             raise NotFoundException
         
@@ -73,7 +70,6 @@ class FollowService():
             raise MissingFieldException
         
         user: User = self.user_repository.find_by_username(username)
-
         if not user:
             raise NotFoundException
         
@@ -84,7 +80,6 @@ class FollowService():
             raise MissingFieldException
         
         user: User = self.user_repository.find_by_username(username)
-
         if not user:
             raise NotFoundException
         

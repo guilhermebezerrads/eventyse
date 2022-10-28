@@ -29,12 +29,10 @@ class UserService():
             raise UsernameAlreadyExistsException()
         
         password: bytes = password.encode()
-
         password_salt: bytes = bcrypt.gensalt()
         password_hash: bytes = bcrypt.hashpw(password, password_salt)
 
         user = user_factory(name, username, password_hash, password_salt)
-
         return self.user_repository.create(user)
 
 
@@ -44,11 +42,10 @@ class UserService():
     
 
     def login(self, username: str, try_password: str) -> User:
-        user = self.find_by_username(username)
-
         if not username or not try_password:
             raise MissingFieldException
 
+        user = self.find_by_username(username)
         if not user:
             raise NotFoundException
         
@@ -67,7 +64,6 @@ class UserService():
             raise MissingFieldException
         
         user = self.user_repository.find_by_username(username)
-
         if not user:
             raise NotFoundException
         
