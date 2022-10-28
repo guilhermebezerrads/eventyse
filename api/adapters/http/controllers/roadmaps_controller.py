@@ -3,7 +3,7 @@ from flask import Blueprint, request
 import inject
 
 from domain.exceptions.AlreadyLikedException import AlreadyLikedException
-from domain.exceptions.AlreadyDeslikedException import AlreadyDeslikedException
+from domain.exceptions.AlreadyDislikedException import AlreadyDislikedException
 from domain.exceptions.MissingFieldException import MissingFieldException
 from domain.exceptions.NotFoundException import NotFoundException
 
@@ -119,7 +119,7 @@ def create_roadmaps_blueprint(roadmap_service: RoadmapService, user_service: Use
             return Error('Roadmap or user not found').to_dict(), HTTPStatus.NOT_FOUND
         
         return {
-            'is_liked': is_liked
+            'isLiked': is_liked
         }, HTTPStatus.OK
     
 
@@ -142,39 +142,39 @@ def create_roadmaps_blueprint(roadmap_service: RoadmapService, user_service: Use
         }, HTTPStatus.OK
 
 
-    @roadmaps_blueprint.route('/roadmaps/deslike/<roadmap_id>', methods=['GET'])
+    @roadmaps_blueprint.route('/roadmaps/dislike/<roadmap_id>', methods=['GET'])
     @token_required
-    def is_desliked(current_user: User, roadmap_id: str):
+    def is_disliked(current_user: User, roadmap_id: str):
         username: str = current_user.username
 
         try:
-            is_desliked = roadmap_service.deslike(username, roadmap_id)
+            is_disliked = roadmap_service.dislike(username, roadmap_id)
         except MissingFieldException:
             return Error('Error, missing field').to_dict(), HTTPStatus.BAD_REQUEST 
         except NotFoundException:
             return Error('Roadmap or user not found').to_dict(), HTTPStatus.NOT_FOUND
         
         return {
-            'is_desliked': is_desliked
+            'isDisliked': is_disliked
         }, HTTPStatus.OK
 
     
-    @roadmaps_blueprint.route('/roadmaps/deslike/<roadmap_id>', methods=['PUT'])
+    @roadmaps_blueprint.route('/roadmaps/dislike/<roadmap_id>', methods=['PUT'])
     @token_required
-    def deslike_roadmap(current_user: User, roadmap_id: str):
+    def dislike_roadmap(current_user: User, roadmap_id: str):
         username: str = current_user.username
 
         try:
-            roadmap_service.deslike(username, roadmap_id)
+            roadmap_service.dislike(username, roadmap_id)
         except MissingFieldException:
             return Error('Error, missing field').to_dict(), HTTPStatus.BAD_REQUEST 
         except NotFoundException:
             return Error('Roadmap or user not found').to_dict(), HTTPStatus.NOT_FOUND
-        except AlreadyDeslikedException:
-            return Error('Roadmap already desliked').to_dict(), HTTPStatus.CONFLICT
+        except AlreadyDislikedException:
+            return Error('Roadmap already disliked').to_dict(), HTTPStatus.CONFLICT
         
         return {
-            'message': 'successfully desliked'
+            'message': 'successfully disliked'
         }, HTTPStatus.OK
 
     

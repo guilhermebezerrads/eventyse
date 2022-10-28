@@ -28,9 +28,9 @@ class InMemoryRoadmapRepository(IRoadmapRepository):
     def like(self, username: str, roadmap_id: str) -> None:
         roadmap: Roadmap = self.find_by_id(roadmap_id)
 
-        if self.is_desliked(username, roadmap_id):
+        if self.is_disliked(username, roadmap_id):
             self.ratings.remove((username, roadmap_id, -1))
-            roadmap.deslikes -= 1
+            roadmap.dislikes -= 1
             self.ratings.append((username, roadmap_id, 1))
             roadmap.likes += 1
         else:
@@ -38,7 +38,7 @@ class InMemoryRoadmapRepository(IRoadmapRepository):
             roadmap.likes += 1
     
 
-    def is_desliked(self, username: str, roadmap_id: str) -> bool:
+    def is_disliked(self, username: str, roadmap_id: str) -> bool:
         for u, r, v in self.ratings:
             if u == username and r == roadmap_id and v == -1:
                 return True
@@ -46,17 +46,17 @@ class InMemoryRoadmapRepository(IRoadmapRepository):
         return False
 
 
-    def deslike(self, username: str, roadmap_id: str) -> None:
+    def dislike(self, username: str, roadmap_id: str) -> None:
         roadmap: Roadmap = self.find_by_id(roadmap_id)
 
         if self.is_liked(username, roadmap_id):
             self.ratings.remove((username, roadmap_id, 1))
             roadmap.likes -= 1
             self.ratings.append((username, roadmap_id, -1))
-            roadmap.deslikes += 1
+            roadmap.dislikes += 1
         else:
             self.ratings.append((username, roadmap_id, -1))
-            roadmap.deslikes += 1
+            roadmap.dislikes += 1
 
 
     def find_all(self) -> list[Roadmap]:

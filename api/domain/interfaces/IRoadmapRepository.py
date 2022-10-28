@@ -23,11 +23,11 @@ class IRoadmapRepository(ABC):
         pass
 
     @abstractmethod
-    def is_desliked(self, username: str, roadmap_id: str) -> bool:
+    def is_disliked(self, username: str, roadmap_id: str) -> bool:
         pass
 
     @abstractmethod
-    def deslike(self, username: str, roadmap_id: str) -> None:
+    def dislike(self, username: str, roadmap_id: str) -> None:
         pass
     
     @abstractmethod

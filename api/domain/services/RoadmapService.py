@@ -1,7 +1,7 @@
 import inject
 
 from domain.exceptions.AlreadyLikedException import AlreadyLikedException
-from domain.exceptions.AlreadyDeslikedException import AlreadyDeslikedException
+from domain.exceptions.AlreadyDislikedException import AlreadyDislikedException
 from domain.exceptions.MissingFieldException import MissingFieldException
 from domain.exceptions.NotFoundException import NotFoundException
 
@@ -106,7 +106,7 @@ class RoadmapService():
         
         self.roadmap_repository.like(username, roadmap_id)
 
-    def is_desliked(self, username, roadmap_id) -> bool:
+    def is_disliked(self, username, roadmap_id) -> bool:
         if not username or not roadmap_id:
             raise MissingFieldException
         
@@ -116,10 +116,10 @@ class RoadmapService():
         if not user or not roadmap:
             raise NotFoundException
         
-        return self.roadmap_repository.is_desliked(username, roadmap_id)
+        return self.roadmap_repository.is_disliked(username, roadmap_id)
 
 
-    def deslike(self, username: str, roadmap_id: str) -> None:
+    def dislike(self, username: str, roadmap_id: str) -> None:
         if not username or not roadmap_id:
             raise MissingFieldException
         
@@ -129,8 +129,8 @@ class RoadmapService():
         if not user or not roadmap:
             raise NotFoundException
         
-        if self.roadmap_repository.is_desliked(username, roadmap_id):
-            raise AlreadyDeslikedException
+        if self.roadmap_repository.is_disliked(username, roadmap_id):
+            raise AlreadyDislikedException
         
-        self.roadmap_repository.deslike(username, roadmap_id)
+        self.roadmap_repository.dislike(username, roadmap_id)
 

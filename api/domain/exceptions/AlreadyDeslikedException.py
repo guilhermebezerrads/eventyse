@@ -1,2 +1,0 @@
-class AlreadyDeslikedException(Exception):
-    pass

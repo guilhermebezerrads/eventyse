@@ -14,7 +14,7 @@ class Roadmap:
     tags: list[str]
     created_date: datetime
     likes: int
-    deslikes: int
+    dislikes: int
 
 def roadmap_factory(
         author_username: str, 
@@ -23,7 +23,7 @@ def roadmap_factory(
         tags: list[str], 
         created: datetime = None, 
         likes: int = 0,
-        deslikes: int = 0
+        dislikes: int = 0
     ) -> Roadmap:
 
     created_date = created or datetime.now()
@@ -36,5 +36,5 @@ def roadmap_factory(
         tags=tags,
         created_date=created_date,
         likes=likes,
-        deslikes=deslikes
+        dislikes=dislikes
     )

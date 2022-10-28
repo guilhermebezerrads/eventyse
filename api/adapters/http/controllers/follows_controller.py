@@ -35,7 +35,7 @@ def create_follows_blueprint(user_service: UserService, follow_service: FollowSe
             return Error('Error, some user not found').to_dict(), HTTPStatus.NOT_FOUND 
 
         return {
-            'is_follower': is_follower
+            'isFollower': is_follower
         }, HTTPStatus.OK
 
 
@@ -93,7 +93,7 @@ def create_follows_blueprint(user_service: UserService, follow_service: FollowSe
 
         return {
             'username': username,
-            'followers_counter': len(followers),
+            'followersCounter': len(followers),
             'followers': [f_user.to_dict() for f_user in followers]
         }, HTTPStatus.OK
     
@@ -110,7 +110,7 @@ def create_follows_blueprint(user_service: UserService, follow_service: FollowSe
 
         return {
             'username': username,
-            'following_counter': len(following),
+            'followingCounter': len(following),
             'following': [f_user.to_dict() for f_user in following]
         }, HTTPStatus.OK
 
