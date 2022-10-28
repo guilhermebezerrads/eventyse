@@ -23,9 +23,9 @@ def create_comment_blueprint(comment_service: CommentService) -> Blueprint:
         try:
             roadmap_comments: list[Comment] = comment_service.find_all_by_roadmap_id(roadmap_id)
         except MissingFieldException:
-            return Error('Error, missing field').to_dict(), HTTPStatus.BAD_REQUEST
+            return Error('error, missing field').to_dict(), HTTPStatus.BAD_REQUEST
         except NotFoundException:
-            return Error('Error, roadmap not found').to_dict(), HTTPStatus.NOT_FOUND
+            return Error('error, roadmap not found').to_dict(), HTTPStatus.NOT_FOUND
 
         return [roadmap.to_dict() for roadmap in roadmap_comments], HTTPStatus.OK
     
@@ -39,9 +39,9 @@ def create_comment_blueprint(comment_service: CommentService) -> Blueprint:
         try:
             comment: Comment = comment_service.create(username, roadmap_id, text)
         except MissingFieldException:
-            return Error('Error, missing field').to_dict(), HTTPStatus.BAD_REQUEST
+            return Error('error, missing field').to_dict(), HTTPStatus.BAD_REQUEST
         except NotFoundException:
-            return Error('Error, roadmap not found').to_dict(), HTTPStatus.NOT_FOUND 
+            return Error('error, roadmap not found').to_dict(), HTTPStatus.NOT_FOUND 
 
         return comment.to_dict(), HTTPStatus.OK
 

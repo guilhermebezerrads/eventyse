@@ -28,11 +28,11 @@ def create_follows_blueprint(user_service: UserService, follow_service: FollowSe
         try:
             is_follower = follow_service.is_follower(username, target_username)
         except MissingFieldException:
-            return Error('Error, missing field').to_dict(), HTTPStatus.BAD_REQUEST
+            return Error('error, missing field').to_dict(), HTTPStatus.BAD_REQUEST
         except SameUserException:
-            return Error('Error, usernames must be different').to_dict(), HTTPStatus.BAD_REQUEST
+            return Error('error, usernames must be different').to_dict(), HTTPStatus.BAD_REQUEST
         except NotFoundException:
-            return Error('Error, some user not found').to_dict(), HTTPStatus.NOT_FOUND 
+            return Error('error, some user not found').to_dict(), HTTPStatus.NOT_FOUND 
 
         return {
             'isFollower': is_follower
@@ -47,13 +47,13 @@ def create_follows_blueprint(user_service: UserService, follow_service: FollowSe
         try:
             follow_service.follow(username, target_username)
         except MissingFieldException:
-            return Error('Error, missing field').to_dict(), HTTPStatus.BAD_REQUEST
+            return Error('error, missing field').to_dict(), HTTPStatus.BAD_REQUEST
         except SameUserException:
-            return Error('Error, usernames must be different').to_dict(), HTTPStatus.BAD_REQUEST
+            return Error('error, usernames must be different').to_dict(), HTTPStatus.BAD_REQUEST
         except NotFoundException:
-            return Error('Error, some user not found').to_dict(), HTTPStatus.NOT_FOUND 
+            return Error('error, some user not found').to_dict(), HTTPStatus.NOT_FOUND 
         except AlreadyFollowException:
-            return Error('Already following').to_dict(), HTTPStatus.CONFLICT
+            return Error('already following').to_dict(), HTTPStatus.CONFLICT
         
         return {
             'message': 'successfully followed'
@@ -68,13 +68,13 @@ def create_follows_blueprint(user_service: UserService, follow_service: FollowSe
         try:
             follow_service.unfollow(username, target_username)
         except MissingFieldException:
-            return Error('Error, missing field').to_dict(), HTTPStatus.BAD_REQUEST
+            return Error('error, missing field').to_dict(), HTTPStatus.BAD_REQUEST
         except SameUserException:
-            return Error('Error, usernames must be different').to_dict(), HTTPStatus.BAD_REQUEST
+            return Error('error, usernames must be different').to_dict(), HTTPStatus.BAD_REQUEST
         except NotFoundException:
-            return Error('Error, some user not found').to_dict(), HTTPStatus.NOT_FOUND 
+            return Error('error, some user not found').to_dict(), HTTPStatus.NOT_FOUND 
         except NotFollowerException:
-            return Error('Must be a follower to unfollow').to_dict(), HTTPStatus.CONFLICT
+            return Error('must be a follower to unfollow').to_dict(), HTTPStatus.CONFLICT
         
         return {
             'message': 'successfully unfollowed'
@@ -87,9 +87,9 @@ def create_follows_blueprint(user_service: UserService, follow_service: FollowSe
         try:
             followers = follow_service.find_all_followers(username)
         except MissingFieldException:
-            return Error('Error, missing field').to_dict(), HTTPStatus.BAD_REQUEST
+            return Error('error, missing field').to_dict(), HTTPStatus.BAD_REQUEST
         except NotFoundException:
-            return Error('Error, username not found').to_dict(), HTTPStatus.NOT_FOUND
+            return Error('error, username not found').to_dict(), HTTPStatus.NOT_FOUND
 
         return {
             'username': username,
@@ -104,9 +104,9 @@ def create_follows_blueprint(user_service: UserService, follow_service: FollowSe
         try:
             following = follow_service.find_all_following(username)
         except MissingFieldException:
-            return Error('Error, missing field').to_dict(), HTTPStatus.BAD_REQUEST
+            return Error('error, missing field').to_dict(), HTTPStatus.BAD_REQUEST
         except NotFoundException:
-            return Error('Error, username not found').to_dict(), HTTPStatus.NOT_FOUND
+            return Error('error, username not found').to_dict(), HTTPStatus.NOT_FOUND
 
         return {
             'username': username,

@@ -19,7 +19,11 @@ class IRoadmapRepository(ABC):
         pass
 
     @abstractmethod
-    def like(self, username: str, roadmap_id: str) -> None:
+    def add_like(self, username: str, roadmap_id: str) -> None:
+        pass
+
+    @abstractmethod
+    def remove_like(self, username: str, roadmap_id: str) -> None:
         pass
 
     @abstractmethod
@@ -27,9 +31,13 @@ class IRoadmapRepository(ABC):
         pass
 
     @abstractmethod
-    def dislike(self, username: str, roadmap_id: str) -> None:
+    def add_dislike(self, username: str, roadmap_id: str) -> None:
         pass
     
+    @abstractmethod
+    def remove_dislike(self, username: str, roadmap_id: str) -> None:
+        pass
+
     @abstractmethod
     def find_all_by_username(self, username: str) -> list[Roadmap]:
         pass

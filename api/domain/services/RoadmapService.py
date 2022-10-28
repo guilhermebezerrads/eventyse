@@ -2,6 +2,8 @@ import inject
 
 from domain.exceptions.AlreadyLikedException import AlreadyLikedException
 from domain.exceptions.AlreadyDislikedException import AlreadyDislikedException
+from domain.exceptions.NotLikedException import NotLikedException
+from domain.exceptions.NotDislikedException import NotDislikedException
 from domain.exceptions.MissingFieldException import MissingFieldException
 from domain.exceptions.NotFoundException import NotFoundException
 
@@ -17,6 +19,18 @@ class RoadmapService():
         self.user_repository: IUserRepository = user_repository
     
     
+    def create(self, username: str, title: str, description: str, coordinates: list[list[float]], tags: list[str]) -> Roadmap:
+        if not username or not title or not description or not coordinates or not tags:
+            raise MissingFieldException
+        
+        user = self.user_repository.find_by_username(username)
+        if not user:
+            raise NotFoundException
+        
+        roadmap = roadmap_factory(username, title, description, coordinates, tags)
+        return self.roadmap_repository.create(roadmap)
+    
+
     def find_all(self) -> list[Roadmap]:
         return self.roadmap_repository.find_all()
 
@@ -61,18 +75,6 @@ class RoadmapService():
         return self.roadmap_repository.find_all_by_tags(tag)
 
 
-    def create(self, username: str, title: str, description: str, coordinates: list[list[float]], tags: list[str]) -> Roadmap:
-        if not username or not title or not description or not coordinates or not tags:
-            raise MissingFieldException
-        
-        user = self.user_repository.find_by_username(username)
-        if not user:
-            raise NotFoundException
-        
-        roadmap = roadmap_factory(username, title, description, coordinates, tags)
-        return self.roadmap_repository.create(roadmap)
-
-
     def is_liked(self, username, roadmap_id) -> bool:
         if not username or not roadmap_id:
             raise MissingFieldException
@@ -85,7 +87,7 @@ class RoadmapService():
         return self.roadmap_repository.is_liked(username, roadmap_id)
 
 
-    def like(self, username: str, roadmap_id: str) -> None:
+    def add_like(self, username: str, roadmap_id: str) -> None:
         if not username or not roadmap_id:
             raise MissingFieldException
         
@@ -97,7 +99,22 @@ class RoadmapService():
         if self.roadmap_repository.is_liked(username, roadmap_id):
             raise AlreadyLikedException
         
-        self.roadmap_repository.like(username, roadmap_id)
+        self.roadmap_repository.add_like(username, roadmap_id)
+    
+    
+    def remove_like(self, username: str, roadmap_id: str) -> None:
+        if not username or not roadmap_id:
+            raise MissingFieldException
+        
+        user = self.user_repository.find_by_username(username)
+        roadmap = self.roadmap_repository.find_by_id(roadmap_id)
+        if not user or not roadmap:
+            raise NotFoundException
+        
+        if not self.roadmap_repository.is_liked(username, roadmap_id):
+            raise NotLikedException
+        
+        self.roadmap_repository.remove_like(username, roadmap_id)
 
 
     def is_disliked(self, username, roadmap_id) -> bool:
@@ -112,7 +129,7 @@ class RoadmapService():
         return self.roadmap_repository.is_disliked(username, roadmap_id)
 
 
-    def dislike(self, username: str, roadmap_id: str) -> None:
+    def add_dislike(self, username: str, roadmap_id: str) -> None:
         if not username or not roadmap_id:
             raise MissingFieldException
         
@@ -124,5 +141,19 @@ class RoadmapService():
         if self.roadmap_repository.is_disliked(username, roadmap_id):
             raise AlreadyDislikedException
         
-        self.roadmap_repository.dislike(username, roadmap_id)
-
+        self.roadmap_repository.add_dislike(username, roadmap_id)
+    
+    
+    def remove_dislike(self, username: str, roadmap_id: str) -> None:
+        if not username or not roadmap_id:
+            raise MissingFieldException
+        
+        user = self.user_repository.find_by_username(username)
+        roadmap = self.roadmap_repository.find_by_id(roadmap_id)
+        if not user or not roadmap:
+            raise NotFoundException
+        
+        if not self.roadmap_repository.is_disliked(username, roadmap_id):
+            raise NotDislikedException
+        
+        self.roadmap_repository.remove_dislike(username, roadmap_id)

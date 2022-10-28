@@ -30,9 +30,9 @@ def create_users_blueprint(user_service: UserService, follow_service: FollowServ
         try:
             user: User = user_service.find_by_username(username)
         except MissingFieldException:
-            return Error('Error, missing field').to_dict(), HTTPStatus.BAD_REQUEST
+            return Error('error, missing field').to_dict(), HTTPStatus.BAD_REQUEST
         except NotFoundException:
-            return Error('Error, username not found').to_dict(), HTTPStatus.NOT_FOUND
+            return Error('error, username not found').to_dict(), HTTPStatus.NOT_FOUND
         
         return user.to_dict(), HTTPStatus.OK
 

@@ -29,9 +29,9 @@ def create_accounts_blueprint(user_service: UserService) -> Blueprint:
         try:
             user = user_service.create(name, username, password)
         except MissingFieldException:
-            return Error('Error, missing field').to_dict(), HTTPStatus.BAD_REQUEST
+            return Error('error, missing field').to_dict(), HTTPStatus.BAD_REQUEST
         except UsernameAlreadyExistsException:
-            return Error('Error, username already taken').to_dict(), HTTPStatus.CONFLICT 
+            return Error('error, username already taken').to_dict(), HTTPStatus.CONFLICT 
 
         token = create_token(user)
         
@@ -49,11 +49,11 @@ def create_accounts_blueprint(user_service: UserService) -> Blueprint:
         try:
             user: User = user_service.login(username, try_password)
         except MissingFieldException:
-            return Error('Error, missing field').to_dict(), HTTPStatus.BAD_REQUEST
+            return Error('error, missing field').to_dict(), HTTPStatus.BAD_REQUEST
         except NotFoundException:
-            return Error('Error, invalid username').to_dict(), HTTPStatus.NOT_FOUND
+            return Error('error, invalid username').to_dict(), HTTPStatus.NOT_FOUND
         except UnauthorizedException:
-            return Error('Error, invalid password').to_dict(), HTTPStatus.UNAUTHORIZED
+            return Error('error, invalid password').to_dict(), HTTPStatus.UNAUTHORIZED
 
         token = create_token(user)
         
