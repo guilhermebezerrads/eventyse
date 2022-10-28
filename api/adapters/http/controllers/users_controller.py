@@ -2,9 +2,6 @@ from http import HTTPStatus
 from flask import Blueprint
 import inject
 
-from domain.exceptions.MissingFieldException import MissingFieldException
-from domain.exceptions.NotFoundException import NotFoundException
-
 from domain.models.User import User
 
 from domain.services.FollowService import FollowService

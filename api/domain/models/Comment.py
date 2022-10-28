@@ -12,7 +12,13 @@ class Comment:
     text: str
     created_date: datetime
 
-def comment_factory(author_username: str, roadmap_id: str, text: str, created: datetime = None) -> Comment:
+def comment_factory(
+        author_username: str, 
+        roadmap_id: str, 
+        text: str, 
+        created: datetime = None
+    ) -> Comment:
+
     created_date = created or datetime.now()
     return Comment(
         id=str(uuid.uuid4()),

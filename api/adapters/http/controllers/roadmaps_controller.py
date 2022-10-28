@@ -2,11 +2,6 @@ from http import HTTPStatus
 from flask import Blueprint, request
 import inject
 
-from domain.exceptions.AlreadyLikedException import AlreadyLikedException
-from domain.exceptions.AlreadyDislikedException import AlreadyDislikedException
-from domain.exceptions.MissingFieldException import MissingFieldException
-from domain.exceptions.NotFoundException import NotFoundException
-
 from domain.models.Roadmap import Roadmap
 from domain.models.User import User
 

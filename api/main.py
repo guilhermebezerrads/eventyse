@@ -8,9 +8,6 @@ from adapters.http.controllers.rate_controller import create_rates_blueprint
 from adapters.http.controllers.comments_controller import create_comment_blueprint
 from adapters.http.controllers.exceptions_controller import create_exceptions_blueprint
 
-from domain.exceptions.MissingFieldException import MissingFieldException
-from http import HTTPStatus
-
 from configuration import configure_api, configure_inject
 
 def create_api() -> Flask:
