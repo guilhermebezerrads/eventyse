@@ -6,7 +6,7 @@ from domain.models.User import User
 
 from domain.ports.IRoadmapService import IRoadmapService
 
-from ..auth import token_required
+from adapters.rest.decorators import token_required
 
 @inject.autoparams()
 def create_rates_blueprint(roadmap_service: IRoadmapService) -> Blueprint:

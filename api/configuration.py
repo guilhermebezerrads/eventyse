@@ -10,6 +10,7 @@ from domain.ports.IUserService import IUserService
 from domain.ports.IFollowService import IFollowService
 from domain.ports.IRoadmapService import IRoadmapService
 from domain.ports.ICommentService import ICommentService
+from domain.ports.ITokenService import ITokenService
 
 from adapters.db.InMemoryUserRepository import InMemoryUserRepository
 from adapters.db.InMemoryFollowRepository import InMemoryFollowRepository
@@ -20,6 +21,7 @@ from domain.services.UserService import UserService
 from domain.services.FollowService import FollowService
 from domain.services.RoadmapService import RoadmapService
 from domain.services.CommentService import CommentService
+from domain.services.TokenService import TokenService
 
 def configure_api(api: Flask) -> None:
     load_dotenv()
@@ -35,5 +37,6 @@ def configure_inject(api: Flask) -> None:
         binder.bind_to_constructor(IFollowService, FollowService)
         binder.bind_to_constructor(IRoadmapService, RoadmapService)
         binder.bind_to_constructor(ICommentService, CommentService)
+        binder.bind_to_constructor(ITokenService, TokenService)
      
     inject.configure(config)

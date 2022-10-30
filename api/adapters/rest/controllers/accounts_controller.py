@@ -5,11 +5,10 @@ import inject
 from domain.models.User import User
 
 from domain.ports.IUserService import IUserService
-
-from ..auth import create_token
+from domain.ports.ITokenService import ITokenService
 
 @inject.autoparams()
-def create_accounts_blueprint(user_service: IUserService) -> Blueprint:
+def create_accounts_blueprint(user_service: IUserService, token_service: ITokenService) -> Blueprint:
     accounts_blueprint = Blueprint('account', __name__)
 
     @accounts_blueprint.route('/register', methods=['POST'])
@@ -20,7 +19,7 @@ def create_accounts_blueprint(user_service: IUserService) -> Blueprint:
 
         user = user_service.create(name, username, password)
 
-        token = create_token(user)
+        token = token_service.create_token(user)
         
         return {
             'username': user.username,
@@ -35,7 +34,7 @@ def create_accounts_blueprint(user_service: IUserService) -> Blueprint:
 
         user: User = user_service.login(username, try_password)
 
-        token = create_token(user)
+        token = token_service.create_token(user)
         
         return {
             'username': user.username,

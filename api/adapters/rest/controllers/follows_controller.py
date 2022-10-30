@@ -7,7 +7,7 @@ from domain.models.User import User
 from domain.ports.IUserService import IUserService
 from domain.ports.IFollowService import IFollowService
 
-from ..auth import token_required
+from adapters.rest.decorators import token_required
 
 @inject.autoparams()
 def create_follows_blueprint(user_service: IUserService, follow_service: IFollowService) -> Blueprint:

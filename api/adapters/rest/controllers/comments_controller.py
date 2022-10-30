@@ -7,7 +7,7 @@ from domain.models.User import User
 
 from domain.ports.ICommentService import ICommentService
 
-from ..auth import token_required
+from adapters.rest.decorators import token_required
 
 @inject.autoparams()
 def create_comment_blueprint(comment_service: ICommentService) -> Blueprint:
