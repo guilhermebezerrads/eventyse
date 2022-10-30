@@ -1,12 +1,12 @@
 from flask import Flask
 
-from adapters.http.controllers.accounts_controller import create_accounts_blueprint
-from adapters.http.controllers.users_controller import create_users_blueprint
-from adapters.http.controllers.follows_controller import create_follows_blueprint
-from adapters.http.controllers.roadmaps_controller import create_roadmaps_blueprint
-from adapters.http.controllers.rate_controller import create_rates_blueprint
-from adapters.http.controllers.comments_controller import create_comment_blueprint
-from adapters.http.controllers.exceptions_controller import create_exceptions_blueprint
+from adapters.rest.controllers.accounts_controller import create_accounts_blueprint
+from adapters.rest.controllers.users_controller import create_users_blueprint
+from adapters.rest.controllers.follows_controller import create_follows_blueprint
+from adapters.rest.controllers.roadmaps_controller import create_roadmaps_blueprint
+from adapters.rest.controllers.rate_controller import create_rates_blueprint
+from adapters.rest.controllers.comments_controller import create_comment_blueprint
+from adapters.rest.controllers.exceptions_controller import create_exceptions_blueprint
 
 from configuration import configure_api, configure_inject
 

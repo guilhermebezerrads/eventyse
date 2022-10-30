@@ -6,12 +6,13 @@ from domain.exceptions.UsernameAlreadyExistsException import UsernameAlreadyExis
 from domain.exceptions.NotFoundException import NotFoundException
 from domain.exceptions.UnauthorizedException import UnauthorizedException
 
-from domain.interfaces.IUserRepository import IUserRepository
+from domain.ports.IUserService import IUserService
+from domain.ports.IUserRepository import IUserRepository
 
 from domain.models.User import User, user_factory
 
 
-class UserService():
+class UserService(IUserService):
     @inject.autoparams()
     def __init__(self, user_repository: IUserRepository):
         self.user_repository: IUserRepository = user_repository

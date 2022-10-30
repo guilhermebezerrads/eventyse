@@ -5,12 +5,12 @@ import inject
 from domain.models.Roadmap import Roadmap
 from domain.models.User import User
 
-from domain.services.RoadmapService import RoadmapService
+from domain.ports.IRoadmapService import IRoadmapService
 
 from ..auth import token_required
 
 @inject.autoparams()
-def create_roadmaps_blueprint(roadmap_service: RoadmapService) -> Blueprint:
+def create_roadmaps_blueprint(roadmap_service: IRoadmapService) -> Blueprint:
     roadmaps_blueprint = Blueprint('roadmaps', __name__)
 
     @roadmaps_blueprint.route('/roadmaps', methods=['POST'])

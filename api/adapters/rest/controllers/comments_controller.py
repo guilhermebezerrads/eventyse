@@ -5,12 +5,12 @@ import inject
 from domain.models.Comment import Comment
 from domain.models.User import User
 
-from domain.services.CommentService import CommentService
+from domain.ports.ICommentService import ICommentService
 
 from ..auth import token_required
 
 @inject.autoparams()
-def create_comment_blueprint(comment_service: CommentService) -> Blueprint:
+def create_comment_blueprint(comment_service: ICommentService) -> Blueprint:
     comments_blueprint = Blueprint('comments', __name__)
 
     @comments_blueprint.route('/comments/<roadmap_id>', methods=['GET'])

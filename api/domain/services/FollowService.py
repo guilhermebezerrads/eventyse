@@ -6,12 +6,13 @@ from domain.exceptions.NotFoundException import NotFoundException
 from domain.exceptions.AlreadyFollowException import AlreadyFollowException
 from domain.exceptions.NotFollowerException import NotFollowerException
 
-from domain.interfaces.IFollowRepository import IFollowRepository
-from domain.interfaces.IUserRepository import IUserRepository
+from domain.ports.IFollowService import IFollowService
+from domain.ports.IFollowRepository import IFollowRepository
+from domain.ports.IUserRepository import IUserRepository
 
 from domain.models.User import User
 
-class FollowService():
+class FollowService(IFollowService):
     @inject.autoparams()
     def __init__(self, follow_repository: IFollowRepository, user_repository: IUserRepository):
         self.follow_repository: IFollowRepository = follow_repository

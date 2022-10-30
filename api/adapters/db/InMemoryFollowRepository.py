@@ -1,7 +1,7 @@
 import inject
 
-from domain.interfaces.IUserRepository import IUserRepository
-from domain.interfaces.IFollowRepository import IFollowRepository
+from domain.ports.IUserRepository import IUserRepository
+from domain.ports.IFollowRepository import IFollowRepository
 
 from domain.models.User import User
 

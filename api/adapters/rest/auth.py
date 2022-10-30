@@ -1,4 +1,3 @@
-from tokenize import Token
 import jwt
 import os
 import inject
@@ -10,7 +9,7 @@ from domain.exceptions.TokenException import TokenException
 
 from domain.models.User import User
 
-from domain.interfaces.IUserRepository import IUserRepository
+from domain.ports.IUserRepository import IUserRepository
 
 def token_required(f):
     @wraps(f)

@@ -4,13 +4,13 @@ import inject
 
 from domain.models.User import User
 
-from domain.services.FollowService import FollowService
-from domain.services.UserService import UserService
+from domain.ports.IUserService import IUserService
+from domain.ports.IFollowService import IFollowService
 
 from ..auth import token_required
 
 @inject.autoparams()
-def create_users_blueprint(user_service: UserService, follow_service: FollowService) -> Blueprint:
+def create_users_blueprint(user_service: IUserService, follow_service: IFollowService) -> Blueprint:
     users_blueprint = Blueprint('users', __name__)
 
     @users_blueprint.route('/users', methods=['GET'])

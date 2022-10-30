@@ -4,12 +4,12 @@ import inject
 
 from domain.models.User import User
 
-from domain.services.UserService import UserService
+from domain.ports.IUserService import IUserService
 
 from ..auth import create_token
 
 @inject.autoparams()
-def create_accounts_blueprint(user_service: UserService) -> Blueprint:
+def create_accounts_blueprint(user_service: IUserService) -> Blueprint:
     accounts_blueprint = Blueprint('account', __name__)
 
     @accounts_blueprint.route('/register', methods=['POST'])

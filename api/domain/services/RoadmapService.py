@@ -7,12 +7,13 @@ from domain.exceptions.NotDislikedException import NotDislikedException
 from domain.exceptions.MissingFieldException import MissingFieldException
 from domain.exceptions.NotFoundException import NotFoundException
 
-from domain.interfaces.IRoadmapRepository import IRoadmapRepository
-from domain.interfaces.IUserRepository import IUserRepository
+from domain.ports.IRoadmapService import IRoadmapService
+from domain.ports.IRoadmapRepository import IRoadmapRepository
+from domain.ports.IUserRepository import IUserRepository
 
 from domain.models.Roadmap import Roadmap, roadmap_factory
 
-class RoadmapService():
+class RoadmapService(IRoadmapService):
     @inject.autoparams()
     def __init__(self, roadmap_repository: IRoadmapRepository, user_repository: IUserRepository):
         self.roadmap_repository: IRoadmapRepository = roadmap_repository

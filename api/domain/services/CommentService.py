@@ -3,13 +3,14 @@ import inject
 from domain.exceptions.MissingFieldException import MissingFieldException
 from domain.exceptions.NotFoundException import NotFoundException
 
-from domain.interfaces.ICommentRepository import ICommentRepository
-from domain.interfaces.IRoadmapRepository import IRoadmapRepository
-from domain.interfaces.IUserRepository import IUserRepository
+from domain.ports.ICommentService import ICommentService
+from domain.ports.ICommentRepository import ICommentRepository
+from domain.ports.IRoadmapRepository import IRoadmapRepository
+from domain.ports.IUserRepository import IUserRepository
 
 from domain.models.Comment import Comment, comment_factory
 
-class CommentService():
+class CommentService(ICommentService):
     @inject.autoparams()
     def __init__(self, comment_repository: ICommentRepository, roadmap_repository: IRoadmapRepository, user_repository: IUserRepository):
         self.comment_repository: ICommentRepository = comment_repository

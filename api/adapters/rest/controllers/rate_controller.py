@@ -4,12 +4,12 @@ import inject
 
 from domain.models.User import User
 
-from domain.services.RoadmapService import RoadmapService
+from domain.ports.IRoadmapService import IRoadmapService
 
 from ..auth import token_required
 
 @inject.autoparams()
-def create_rates_blueprint(roadmap_service: RoadmapService) -> Blueprint:
+def create_rates_blueprint(roadmap_service: IRoadmapService) -> Blueprint:
     rates_blueprint = Blueprint('rates', __name__)
     
     @rates_blueprint.route('/roadmaps/like/<roadmap_id>', methods=['GET'])

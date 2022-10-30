@@ -1,7 +1,7 @@
 import inject 
 
-from domain.interfaces.IRoadmapRepository import IRoadmapRepository
-from domain.interfaces.IFollowRepository import IFollowRepository
+from domain.ports.IRoadmapRepository import IRoadmapRepository
+from domain.ports.IFollowRepository import IFollowRepository
 
 from domain.models.Roadmap import Roadmap
 

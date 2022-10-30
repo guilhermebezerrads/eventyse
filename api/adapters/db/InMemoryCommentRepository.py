@@ -1,4 +1,4 @@
-from domain.interfaces.ICommentRepository import ICommentRepository
+from domain.ports.ICommentRepository import ICommentRepository
 
 from domain.models.Comment import Comment
 

@@ -1,16 +1,16 @@
 from http import HTTPStatus
-from flask import Blueprint, request
+from flask import Blueprint
 import inject
 
 from domain.models.User import User
 
-from domain.services.FollowService import FollowService
-from domain.services.UserService import UserService
+from domain.ports.IUserService import IUserService
+from domain.ports.IFollowService import IFollowService
 
 from ..auth import token_required
 
 @inject.autoparams()
-def create_follows_blueprint(user_service: UserService, follow_service: FollowService) -> Blueprint:
+def create_follows_blueprint(user_service: IUserService, follow_service: IFollowService) -> Blueprint:
     follows_blueprint = Blueprint('follows', __name__)
 
     @follows_blueprint.route('/users/follow/<target_username>', methods=['GET'])
