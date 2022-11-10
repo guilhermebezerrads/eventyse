@@ -31,4 +31,14 @@ def create_comment_blueprint(comment_service: ICommentService) -> Blueprint:
 
         return comment.to_dict(), HTTPStatus.OK
 
+    @comments_blueprint.route('/comments/<comment_id>', methods=['DELETE'])
+    @token_required
+    def delete_comment(current_user: User, comment_id: str):
+        username: str = current_user.username 
+
+        comment_service.delete_by_id(username, comment_id)
+
+        return "", HTTPStatus.NO_CONTENT
+    
+
     return comments_blueprint

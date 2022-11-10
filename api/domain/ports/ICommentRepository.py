@@ -9,3 +9,7 @@ class ICommentRepository(ABC):
     @abstractmethod
     def find_all_by_roadmap_id(self, roadmap_id: str) -> list[Comment]:
         pass
+
+    @abstractmethod
+    def delete_by_id(self, comment_id: str) -> None:
+        pass

@@ -18,3 +18,14 @@ class InMemoryCommentRepository(ICommentRepository):
             if comment.roadmap_id == roadmap_id:
                 roadmap_comments.append(comment)
         return roadmap_comments
+
+    def delete_by_id(self, comment_id: str) -> None:
+        comment_to_delete: Comment = None
+        for comment in self.comments:
+            if comment.id == comment_id:
+                comment_to_delete = comment
+                break
+
+        self.comments.remove(comment_to_delete)
+
+        return None

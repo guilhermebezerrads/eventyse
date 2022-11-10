@@ -2,6 +2,7 @@ import inject
 
 from domain.exceptions.MissingFieldException import MissingFieldException
 from domain.exceptions.NotFoundException import NotFoundException
+from domain.exceptions.UnauthorizedException import UnauthorizedException
 
 from domain.ports.ICommentService import ICommentService
 from domain.ports.ICommentRepository import ICommentRepository
@@ -40,3 +41,17 @@ class CommentService(ICommentService):
             raise NotFoundException('roadmap not found')
 
         return self.comment_repository.find_all_by_roadmap_id(roadmap_id)
+
+    def delete_by_id(self, username: str, comment_id: str) -> None:
+        if not comment_id:
+            raise MissingFieldException('missing comment_id field')
+
+        comment: Comment = self.comment_repository.find_by_id(comment_id)
+
+        if not comment:
+            raise NotFoundException('comment not found')
+
+        if not comment.author_username == username:
+            raise UnauthorizedException('user unauthorized')
+
+        self.comment_repository.delete_by_id(comment_id)
