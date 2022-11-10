@@ -10,6 +10,13 @@ class InMemoryCommentRepository(ICommentRepository):
     def create(self, comment: Comment) -> Comment:
         self.comments.append(comment)
         return comment
+    
+    
+    def find_by_id(self, comment_id: str) -> Comment:
+        for comment in self.comments:
+            if comment.id == comment_id:
+                return comment
+        return None
 
 
     def find_all_by_roadmap_id(self, roadmap_id: str) -> list[Comment]:

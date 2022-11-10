@@ -7,6 +7,10 @@ class ICommentRepository(ABC):
         pass
 
     @abstractmethod
+    def find_by_id(self, comment_id: str) -> Comment:
+        pass
+
+    @abstractmethod
     def find_all_by_roadmap_id(self, roadmap_id: str) -> list[Comment]:
         pass
 
