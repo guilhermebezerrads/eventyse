@@ -1,5 +1,4 @@
 import inject
-from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from domain.ports.IUserRepository import IUserRepository
