@@ -85,9 +85,8 @@ class SQLiteDB(IDatabase):
     
     def create_connection(self, database_uri: str):
         engine = create_engine(database_uri)
-        # engine = create_engine('sqlite:///project.db')
-        Session = sessionmaker(bind=engine)
         Base.metadata.create_all(engine)
+        Session = sessionmaker(bind=engine)
         session = Session()
         return session
         

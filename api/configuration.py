@@ -35,6 +35,7 @@ def configure_inject(api: Flask) -> None:
     def config(binder: inject.Binder) -> None:
         sqlitedb = SQLiteDB(os.getenv('SQLALCHEMY_DATABASE_URI'))
         binder.bind(IDatabase, sqlitedb)
+        
         binder.bind_to_constructor(IUserRepository, SQLiteUserRepository)
         binder.bind_to_constructor(IFollowRepository, InMemoryFollowRepository)
         binder.bind_to_constructor(IRoadmapRepository, InMemoryRoadmapRepository)
