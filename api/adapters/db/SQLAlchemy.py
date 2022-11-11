@@ -1,7 +1,7 @@
 from sqlalchemy import String, Float, Integer, ForeignKey, create_engine, Column, DateTime, Boolean, Table
 from sqlalchemy.orm import relationship, declarative_base, sessionmaker
 
-from domain.ports.IDatabase import IDatabase
+from adapters.db.interfaces.IDatabase import IDatabase
 
 Base = declarative_base()
 
@@ -79,7 +79,7 @@ class Tag(Base):
     __tablename__ = 'tag'
     name = Column(String, nullable=False, primary_key=True)
 
-class SQLiteDB(IDatabase):
+class SQLiteDatabase(IDatabase):
     def __init__(self, database_uri: str) -> None:
         self.session = self.create_connection(database_uri)
     

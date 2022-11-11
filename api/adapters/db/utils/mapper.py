@@ -1,7 +1,7 @@
 from domain.models.User import User
-from adapters.db import SQLiteDB
+from adapters.db import SQLAlchemy
 
-def userdb_to_model(user_db: SQLiteDB.User) -> User:
+def user_db_to_user_model(user_db: SQLAlchemy.User) -> User:
 
     return User(
         id=user_db.id,
@@ -13,9 +13,9 @@ def userdb_to_model(user_db: SQLiteDB.User) -> User:
         following_counter=user_db.following_counter
     )
 
-def model_to_userdb(user: User) -> SQLiteDB.User:
+def user_model_to_user_db(user: User) -> SQLAlchemy.User:
 
-    return SQLiteDB.User(
+    return SQLAlchemy.User(
         id=user.id,
         name=user.name,
         username=user.username,
