@@ -27,5 +27,6 @@ def create_api() -> Flask:
 
     return api
 
+
 api: Flask = create_api()
 api.run()

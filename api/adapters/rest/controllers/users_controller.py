@@ -23,6 +23,7 @@ def create_users_blueprint(user_service: IUserService, follow_service: IFollowSe
     @users_blueprint.route('/users/<username>', methods=['GET'])
     @token_required
     def get_user(current_user: User, username: str):
+        print("controller chamou")        
         user: User = user_service.find_by_username(username)
         return user.to_dict(), HTTPStatus.OK
 

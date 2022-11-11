@@ -62,6 +62,7 @@ class UserService(IUserService):
     
 
     def find_by_username(self, username: int) -> User:
+        print("service chamou")
         if not username:
             raise MissingFieldException('missing username field')
         
