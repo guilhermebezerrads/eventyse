@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
 
   logIn(): void {
     let { email, password } = this.loginFromGroup.controls;
-    this.loginService.doLogin({username: email.value, password: password.value, id: 1});
+    this.loginService.doLogin(email.value, password.value);
     // .pipe(first())
     // .subscribe(
     //     data => {

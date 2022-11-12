@@ -1,0 +1,46 @@
+:host {
+  height: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .signup-form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .signup-container {
+    width: 250px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  h2 {
+    text-align-last: center;
+  }
+
+  p {
+    font-size: x-small;
+    align-self: center;
+  }
+
+  button {
+    margin: 10px 0;
+  }
+
+  .imagePreview {
+    align-self: center;
+
+    > img {
+      border-radius: 100px;
+      max-width: 150px;
+      max-height: 150px;
+      min-width: 150px;
+      min-height: 150px;
+      object-fit: cover;
+      margin-bottom: 5px;
+    }
+  }
+}

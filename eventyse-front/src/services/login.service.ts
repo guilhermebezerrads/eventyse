@@ -6,9 +6,9 @@ export class LoginService {
 
   login: EventEmitter<any> = new EventEmitter();
 
-  doLogin(user: User): void {
-    this.loggedUser = user;
-    localStorage.setItem('currentUser', JSON.stringify(user));
+  doLogin(username: string, password: string): void {
+    this.loggedUser = {username, password, name: '', avatar: 'assets/avatar.png', id: 1};
+    localStorage.setItem('currentUser', JSON.stringify(this.loggedUser));
     this.login.emit(true);
   }
 
@@ -20,6 +20,10 @@ export class LoginService {
 
   isLogged(): boolean {
     return localStorage.getItem('currentUser') != null;
+  }
+
+  signUp(user: User) {
+    return true;
   }
 
   // doLogin(username: string, password: string) {

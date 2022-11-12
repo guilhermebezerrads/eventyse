@@ -26,6 +26,7 @@ import { LoginComponent } from './login/login.component';
 import { LoginService } from 'src/services/login.service';
 import { SignupComponent } from './signup/signup.component';
 import { AuthGuard } from 'src/guards/auth.guard';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { AuthGuard } from 'src/guards/auth.guard';
     DashboardComponent,
     PostComponent,
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
