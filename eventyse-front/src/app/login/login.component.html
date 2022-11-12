@@ -1,0 +1,21 @@
+<div class="login-container">
+  <h2>Login</h2>
+  <form class="login-form" [formGroup]="loginFromGroup" (ngSubmit)="logIn()">
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>Email</mat-label>
+      <input type="email" matInput formControlName="email" placeholder="pat@example.com">
+      <mat-error *ngIf="emailFormControl?.hasError('email') && !emailFormControl?.hasError('required')">
+        Por favor, entre um email válido.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>Senha</mat-label>
+      <input type="password" matInput formControlName="password" placeholder="Senha">
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit" [disabled]="!loginFromGroup.valid">Login</button>
+
+    <p>Ainda não possui uma conta? <a routerLink="/signup">Cadastre-se.</a></p>
+  </form>
+</div>

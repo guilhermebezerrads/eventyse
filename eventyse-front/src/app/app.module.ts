@@ -9,6 +9,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { PostComponent } from './post/post.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
@@ -21,6 +22,10 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider';
+import { LoginComponent } from './login/login.component';
+import { LoginService } from 'src/services/login.service';
+import { SignupComponent } from './signup/signup.component';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 @NgModule({
   declarations: [
@@ -28,7 +33,9 @@ import { MatDividerModule } from '@angular/material/divider';
     MapComponent,
     MapTestComponent,
     DashboardComponent,
-    PostComponent
+    PostComponent,
+    LoginComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule,
@@ -40,9 +47,11 @@ import { MatDividerModule } from '@angular/material/divider';
     MatButtonModule,
     MatDividerModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
-  providers: [],
+  providers: [LoginService, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

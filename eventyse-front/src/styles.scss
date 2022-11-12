@@ -38,6 +38,10 @@ $libqif-api-theme: mat.define-light-theme((
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+app-root {
+  height: 100%;
+}
+
 a {
   text-decoration: none;
 }

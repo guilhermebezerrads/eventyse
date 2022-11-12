@@ -1,11 +1,13 @@
 <div class="header">
   <mat-toolbar color="primary">
     <div class="title">
-      <mat-icon>explore</mat-icon>
-      <span>Eventyse</span>
+      <a href="/dashboard">
+        <mat-icon>explore</mat-icon>
+        <span>Eventyse</span>
+      </a>
     </div>
-    <input type="text" class="search" placeholder="Pesquisar por #Tag">
-    <button mat-icon-button [matMenuTriggerFor]="menu" class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+    <input *ngIf="isLoggedIn" type="text" class="search" placeholder="Pesquisar por #Tag">
+    <button *ngIf="isLoggedIn" mat-icon-button [matMenuTriggerFor]="menu" class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
       <img src="assets/palmirinha.png" alt="Avatar">
     </button>
     <mat-menu #menu="matMenu" xPosition="before">
@@ -29,7 +31,7 @@
         <mat-icon>settings</mat-icon>
         <span>Configurações</span>
       </button>
-      <button mat-menu-item>
+      <button mat-menu-item (click)="logOff()">
         <mat-icon>logout</mat-icon>
         <span>Sair</span>
       </button>

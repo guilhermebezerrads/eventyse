@@ -13,12 +13,16 @@
   }
 
   .title {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-
     span {
       margin: 5px;
+    }
+
+    > a {
+      all: unset;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      cursor: pointer;
     }
   }
 
@@ -41,6 +45,7 @@
 
   .container {
     padding: 1em;
+    height: 100%;
   }
 
   .header {
