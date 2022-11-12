@@ -20,13 +20,17 @@ import { MatListModule } from '@angular/material/list';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatChipsModule } from '@angular/material/chips';
 import { MatInputModule } from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+
 import { LoginComponent } from './login/login.component';
 import { LoginService } from 'src/services/login.service';
 import { SignupComponent } from './signup/signup.component';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { ProfileComponent } from './profile/profile.component';
+import { CreatePostComponent } from './create-post/create-post.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +41,8 @@ import { ProfileComponent } from './profile/profile.component';
     PostComponent,
     LoginComponent,
     SignupComponent,
-    ProfileComponent
+    ProfileComponent,
+    CreatePostComponent
   ],
   imports: [
     BrowserModule,
@@ -50,6 +55,8 @@ import { ProfileComponent } from './profile/profile.component';
     MatDividerModule,
     MatFormFieldModule,
     MatInputModule,
+    MatChipsModule,
+    MatSlideToggleModule,
     FormsModule,
     ReactiveFormsModule
   ],
