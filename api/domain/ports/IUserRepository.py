@@ -1,20 +1,16 @@
 from abc import ABC, abstractmethod
-from domain.entities.User import User
+from domain.models.User import User
 
 class IUserRepository(ABC):
     @abstractmethod
-    def already_exists(username: int):
+    def create(self, user: User) -> User:
         pass
 
     @abstractmethod
-    def add(user: User):
-        pass
-
-    @abstractmethod
-    def find_all():
+    def find_all(self) -> list[User]:
         pass
     
     @abstractmethod
-    def find_by_username(username: int):
+    def find_by_username(self, username: str) -> User:
         pass
     

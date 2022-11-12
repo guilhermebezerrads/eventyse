@@ -1,0 +1,2 @@
+class AlreadyFollowException(Exception):
+    pass
