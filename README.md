@@ -92,6 +92,45 @@
 - Adicionar front-end da página de resultados [Matheus] 
 - Implementar rota buscaRoteiro [Gabriel]
 
+
+Porta de entrada relacionado aos comentários
+```py
+from abc import ABC, abstractmethod
+from domain.models.Comment import Comment
+
+class ICommentService(ABC):
+    @abstractmethod
+    def create(self, username: str, roadmap_id: str, text: str) -> Comment:
+        pass
+
+    @abstractmethod
+    def find_all_by_roadmap_id(self, roadmap_id: str) -> list[Comment]:
+        pass
+
+    @abstractmethod
+    def delete_by_id(self, username: str, comment_id: str) -> None:
+        pass
+
+```
+
+Adaptador REST que comunica com a porta de entrada ICommentService
+```py
+@inject.autoparams()
+def create_comment_blueprint(comment_service: ICommentService) -> Blueprint:
+    comments_blueprint = Blueprint('comments', __name__)
+    
+    @comments_blueprint.route('/comments/<roadmap_id>', methods=['POST'])
+    @token_required
+    def create_comment(current_user: User, roadmap_id: str):
+        username: str = current_user.username
+        text: str = request.json.get('text')
+
+        comment: Comment = comment_service.create(username, roadmap_id, text)
+
+        return comment.to_dict(), HTTPStatus.OK
+    ...
+```
+
 ##Wireframes
 
 [Figma](https://www.figma.com/file/aGx9MIIJxTbHkNWAfBGFvA/Wireframe?node-id=0%3A1)
