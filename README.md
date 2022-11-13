@@ -93,6 +93,10 @@
 - Implementar rota buscaRoteiro [Gabriel]
 
 
+## Wireframes
+
+[Figma](https://www.figma.com/file/aGx9MIIJxTbHkNWAfBGFvA/Wireframe?node-id=0%3A1)
+
 # Arquitetura do Sistema - Hexagonal
 
 As classes de domínio foram separadas das classes relacionadas à tecnologia e infraestrutura do projeto. Como parte do domínio temos os models para usuário, roadmap e comentários, assim como os serviços associados à eles, que implementam funcionalidades como geração de novos posts, login e registro de contas, like/deslike e etc. 
@@ -150,7 +154,3 @@ def create_comment_blueprint(comment_service: ICommentService) -> Blueprint:
         return comment.to_dict(), HTTPStatus.OK
     ...
 ```
-
-##Wireframes
-
-[Figma](https://www.figma.com/file/aGx9MIIJxTbHkNWAfBGFvA/Wireframe?node-id=0%3A1)
