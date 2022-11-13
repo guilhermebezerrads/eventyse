@@ -27,6 +27,42 @@ export class PostComponent implements OnInit, OnDestroy, AfterViewChecked {
     private changeDetector : ChangeDetectorRef) { }
 
   ngOnInit(): void {
+    this.postService.getComments(this.post.id)
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(
+      (comments) => {
+        this.post.comments = comments.map(
+          (c) => {
+            return {
+              comment: c.text,
+              createDate: c.createdDate,
+              author: c.authorUsername
+            }
+          }
+        )
+      }
+    )
+
+    this.postService.checkLikedPost(this.post.id)
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(
+      (likedStatus) => {
+        if (likedStatus.isLiked) {
+          this.isLiked = true;
+        } else {
+          this.postService.checkDislikedPost(this.post.id)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe(
+            (likedStatus) => {
+              if (likedStatus.isDisliked) {
+                this.isDisliked = true;
+              }
+            }
+          )
+        }
+      }
+    )
+
   }
 
   ngAfterViewChecked(){ this.changeDetector.detectChanges(); }
@@ -51,23 +87,50 @@ export class PostComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   setLiked() {
-    this.isLiked = !this.isLiked;
 
-    if (this.isLiked) {
-      this.isDisliked = false;
-      this.postService.likePost(this.post.id, true);
+    if (!this.isLiked) {
+      this.postService.likePost(this.post.id, true)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        (result) => {
+          this.post.countLike += 1;
+          if (this.isDisliked) {
+            this.isDisliked = false;
+            this.post.countDislike -= 1;
+          }
+        }
+      );
     } else
-      this.postService.likePost(this.post.id, false);
+      this.postService.likePost(this.post.id, false)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((result) => {
+        this.post.countLike -= 1;
+      });
+
+    this.isLiked = !this.isLiked;
   }
 
   setDisliked() {
-    this.isDisliked = !this.isDisliked;
-
-    if (this.isDisliked) {
-      this.isLiked = false;
-      this.postService.likePost(this.post.id, false);
+    if (!this.isDisliked) {
+      this.postService.dislikePost(this.post.id, true)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        (result) => {
+          this.post.countDislike += 1;
+          if (this.isLiked) {
+            this.isLiked = false;
+            this.post.countLike -= 1;
+          }
+        }
+      );
     } else
-      this.postService.likePost(this.post.id, true);
+      this.postService.dislikePost(this.post.id, false)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((result) => {
+        this.post.countDislike -= 1;
+      });
+
+    this.isDisliked = !this.isDisliked;
   }
 
   comment() {
@@ -75,10 +138,14 @@ export class PostComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.postService.addComment(this.commentControl.value, this.post.id)
       .pipe(takeUntil(this.destroy$))
       .subscribe(
-        (createdPost) => {
-          if (createdPost) {
+        (c) => {
+          if (c) {
             window.alert("Comentário adicionado.");
-            this.post.comments.push(createdPost);
+            this.post.comments.push({
+              comment: c.text,
+              createDate: c.createdDate,
+              author: c.authorUsername
+            });
             this.commentControl.reset();
           }
         }

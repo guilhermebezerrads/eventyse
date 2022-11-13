@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { LoginService } from 'src/services/login.service';
 import { Router } from '@angular/router';
+import { FormControl } from '@angular/forms';
+import { throws } from 'assert';
 
 
 @Component({
@@ -15,6 +17,8 @@ export class AppComponent {
 
   isLoggedIn: boolean = false;
 
+  searchFilterControl = new FormControl("");
+
   constructor(private loginService: LoginService, private router: Router) {
     this.isLoggedIn = this.loginService.isLogged();
 
@@ -23,8 +27,8 @@ export class AppComponent {
     });
   }
 
-  get loggedUserId() {
-    return this.loginService.loggedUser?.id;
+  get loggedUsername() {
+    return this.loginService.loggedUser?.username;
   }
 
   get loggedAvatar() {
@@ -34,5 +38,9 @@ export class AppComponent {
   logOff() {
     this.loginService.doLogoff();
     this.router.navigate(['login']);
+  }
+
+  searchPosts() {
+    this.router.navigate(['dashboard', { filterTag: this.searchFilterControl.value }])
   }
 }

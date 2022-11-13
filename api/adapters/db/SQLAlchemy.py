@@ -70,7 +70,7 @@ class Comment(Base):
 
 class Coordinate(Base):
     __tablename__ = 'coordinate'
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     lati = Column(Float, nullable=False)
     long = Column(Float, nullable=False)
     roadmap_id = Column(String, ForeignKey('roadmap.id'), nullable=False)
@@ -81,6 +81,7 @@ class Tag(Base):
 
 class SQLiteDatabase(IDatabase):
     def __init__(self, database_uri: str) -> None:
+        print(database_uri)
         self.session = self.create_connection(database_uri)
     
     def create_connection(self, database_uri: str):

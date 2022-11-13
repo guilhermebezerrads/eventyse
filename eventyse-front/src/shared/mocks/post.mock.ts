@@ -13,12 +13,12 @@ export class PostMock {
     countLike: 123,
     comments: [
       {
-        author: UserMock.userMock1,
+        author: "",
         comment: "Odeio pão de queijo!",
         createDate: new Date(2022, 1, 1, 23, 13)
       },
       {
-        author: UserMock.userMock1,
+        author: "UserMock.userMock1",
         comment: "Amo pão de queijo!",
         createDate: new Date(2022, 1, 1, 23, 35)
       },
@@ -45,12 +45,12 @@ export class PostMock {
     countLike: 123,
     comments: [
       {
-        author: UserMock.userMock1,
+        author: "UserMock.userMock1",
         comment: "Odeio pão de queijo!",
         createDate: new Date(2022, 1, 1, 23, 13)
       },
       {
-        author: UserMock.userMock1,
+        author: "UserMock.userMock1",
         comment: "Amo pão de queijo!",
         createDate: new Date(2022, 1, 1, 23, 35)
       },

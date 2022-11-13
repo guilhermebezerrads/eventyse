@@ -1,7 +1,7 @@
 <div class="container">
   <div class="title">
-    <a [routerLink]="['/profile', { id: post.author.id }]">
-      <img [src]="post.author.avatar" alt="Avatar">
+    <a [routerLink]="['/profile', { id: post.author.username }]">
+      <img [src]="" alt="Avatar">
     </a>
     <h1>{{post.title}}</h1>
   </div>
@@ -21,20 +21,20 @@
       <button mat-icon-button [class.liked]="isLiked" (click)="setLiked()">
         <mat-icon>thumb_up</mat-icon>
       </button>
-        <!-- {{post.countLike}} -->
+        {{post.countLike}}
       <button mat-icon-button [class.disliked]="isDisliked" (click)="setDisliked()">
         <mat-icon>thumb_down</mat-icon>
       </button>
-      <!-- {{post.countDislike}} -->
+      {{post.countDislike}}
     </div>
   </div>
   <mat-divider></mat-divider>
   <div *ngFor="let comment of post.comments" class="comment-container">
     <div class="comment">
-      <img [src]="post.author.avatar" alt="Avatar">
+      <img [src]="" alt="Avatar">
       <div class="comment-comment">
         <div><span class="comment-author">
-          <a [routerLink]="['/profile', { id: comment.author.id }]">{{comment.author.name}}</a>
+          <a [routerLink]="['/profile', { id: comment.author }]">{{comment.author}}</a>
         </span>
           <span class="comment-createDate">{{comment.createDate}}</span>
         </div>

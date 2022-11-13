@@ -9,4 +9,9 @@ export class ExtendedUser extends User {
   following: number = 0;
   postsCount: number = 0;
   id: string = '-1';
+
+  constructor(username: string){
+    super();
+    this.username = username;
+  }
 }

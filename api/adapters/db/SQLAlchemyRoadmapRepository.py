@@ -138,7 +138,7 @@ class SQLAlchemyRoadmapRepository(IRoadmapRepository):
         roadmap_db = self.session.query(SQLAlchemy.Roadmap).filter_by(id=roadmap_id).first()
 
         if self.is_disliked(username, roadmap_id):
-            self.session.query(SQLAlchemy.evaluations).filter(SQLAlchemy.evaluations).filter(SQLAlchemy.evaluations.c.username==username, SQLAlchemy.evaluations.c.roadmap_id==roadmap_id).delete()        
+            self.session.query(SQLAlchemy.evaluations).filter(SQLAlchemy.evaluations.c.username==username, SQLAlchemy.evaluations.c.roadmap_id==roadmap_id).delete()        
             roadmap_db.dislikes -= 1
             self.add_eval(username, roadmap_id, True)
             roadmap_db.likes += 1

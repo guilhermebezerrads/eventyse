@@ -2,12 +2,12 @@
   <h2>Cadastro</h2>
   <form class="signup-form" [formGroup]="signupFromGroup" (ngSubmit)="signUp()">
 
-    <div class="imagePreview" *ngIf="imageURL && imageURL !== ''">
+    <!-- <div class="imagePreview" *ngIf="imageURL && imageURL !== ''">
       <img [src]="imageURL" [alt]="signupFromGroup.value.name">
     </div>
 
     <input hidden formControlName="avatar" type="file" accept="image/*" #file (change)="showPreview($event)">
-    <button mat-raised-button color="primary" (click)="file.click()">Upload file</button>
+    <button mat-raised-button color="primary" (click)="file.click()">Upload file</button> -->
 
     <mat-form-field class="example-full-width" appearance="outline">
       <mat-label>Email</mat-label>

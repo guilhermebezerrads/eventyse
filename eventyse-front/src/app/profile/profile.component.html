@@ -9,8 +9,9 @@
           <h3><b>{{user.postsCount}}</b> Publicações</h3>
         </div>
       </div>
-      <div class="profile-info-actions">
-        <button mat-raised-button color="primary">Seguir</button>
+      <div class="profile-info-actions" *ngIf="isNotUser()">
+        <button mat-raised-button color="primary" *ngIf="followStatus == false" (click)="followUser()">Seguir</button>
+        <button mat-raised-button color="warn" *ngIf="followStatus == true" (click)="unfollowUser()">Deixar de Seguir</button>
         <button mat-raised-button color="primary" disabled>Mensagem</button>
       </div>
     </div>

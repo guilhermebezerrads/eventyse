@@ -4,7 +4,7 @@ import { ExtendedUser } from "./user.model";
 
 export class Post {
   id: string = "";
-  author: ExtendedUser = new ExtendedUser();
+  author: ExtendedUser = new ExtendedUser("");
   title: string = "";
   description: string = "";
   creationDate: Date = new Date();

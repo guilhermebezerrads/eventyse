@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { LoginService } from 'src/services/login.service';
 import { Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -19,22 +20,27 @@ export class LoginComponent implements OnInit {
     return this.loginFromGroup.get('email');
   }
 
-  loginSubscriber: any;
-
   isLoggedIn: boolean = false;
 
-  constructor(private loginService: LoginService, private router: Router) {
-    this.loginSubscriber = this.loginService.login.subscribe(isLoggedIn => {
-      this.router.navigate(['dashboard'])
-    });
-  }
+  destroy$: Subject<boolean> = new Subject<boolean>();
+
+  constructor(private loginService: LoginService, private router: Router) {}
 
   ngOnInit(): void {
   }
 
   logIn(): void {
     let { email, password } = this.loginFromGroup.controls;
-    this.loginService.doLogin(email.value, password.value);
+    this.loginService.doLogin(email.value, password.value)
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(
+      (result) => {
+        if (result) {
+          this.loginService.setToken(result.username, result.token);
+
+          this.router.navigate(['dashboard']);
+        }
+      })
     // .pipe(first())
     // .subscribe(
     //     data => {
@@ -44,6 +50,11 @@ export class LoginComponent implements OnInit {
     //         this.alertService.error(error);
     //         this.loading = false;
     //     });;
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
 
 }

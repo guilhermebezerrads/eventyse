@@ -35,6 +35,9 @@ import { UserService } from 'src/services/user.service';
 import { LocationService } from 'src/services/location.service';
 import { PostService } from 'src/services/post.service';
 
+import { HttpClientModule } from '@angular/common/http';
+import { BaseService } from 'src/services/base.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -61,9 +64,10 @@ import { PostService } from 'src/services/post.service';
     MatChipsModule,
     MatSlideToggleModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
-  providers: [LoginService, UserService, LocationService, PostService, AuthGuard],
+  providers: [LoginService, UserService, LocationService, PostService, BaseService, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

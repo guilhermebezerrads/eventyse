@@ -11,4 +11,22 @@
     right: 25px;
     bottom: 25px;
   }
+
+  .toggle-posts {
+    position: fixed;
+    left: 50px;
+    top: 100px;
+
+    > a {
+      cursor: pointer;
+
+      &:hover {
+        color: #43a047;
+      }
+
+      &:active {
+        color: #43a047;
+      }
+    }
+  }
 }

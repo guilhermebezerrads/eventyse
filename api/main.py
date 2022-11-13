@@ -10,8 +10,11 @@ from adapters.rest.controllers.exceptions_controller import create_exceptions_bl
 
 from configuration import configure_api, configure_inject
 
+from flask_cors import CORS
+
 def create_api() -> Flask:
     api = Flask(__name__)
+    cors = CORS(api, resources={r"/api/*": {"origins": "*"}})
 
     configure_api(api)
     configure_inject(api)
@@ -26,7 +29,6 @@ def create_api() -> Flask:
     api.register_blueprint(create_comment_blueprint(), url_prefix='/api')
 
     return api
-
 
 api: Flask = create_api()
 api.run()

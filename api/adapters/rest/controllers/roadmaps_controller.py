@@ -64,12 +64,11 @@ def create_roadmaps_blueprint(roadmap_service: IRoadmapService) -> Blueprint:
         }, HTTPStatus.OK
 
 
-    @roadmaps_blueprint.route('/roadmaps/tags', methods=['GET'])
+    @roadmaps_blueprint.route('/roadmaps/tag/<tag>', methods=['GET'])
     @token_required
-    def get_roadmaps_by_tags(current_user: User):
-        tags: list[str] = request.json.get('tags')
-
-        tags_roadmaps: list[Roadmap] = roadmap_service.find_all_by_tags(tags)
+    def get_roadmaps_by_tags(current_user: User, tag: str):
+        
+        tags_roadmaps: list[Roadmap] = roadmap_service.find_all_by_tags([tag])
 
         return {
             'roadmaps': [roadmap.to_dict() for roadmap in tags_roadmaps]

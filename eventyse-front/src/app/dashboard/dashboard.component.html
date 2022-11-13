@@ -4,3 +4,7 @@
 <button class="create-post-btn" mat-raised-button color="primary" [routerLink]="['/create']">
   <mat-icon>add</mat-icon>
 </button>
+<div class="toggle-posts" *ngIf="!isFilteringByTag">
+  <a (click)="redirectTo('dashboard')"><h1>Feed</h1></a>
+  <a (click)="redirectTo('dashboard', {followers: true})"><h1>Seguindo</h1></a>
+</div>

@@ -5,48 +5,81 @@ import { PostMock } from "src/shared/mocks/post.mock";
 import { Injectable } from '@angular/core';
 import { LoginService } from "./login.service";
 import { PostComment } from "src/models/post-comment.model";
+import { ExtendedUser } from "src/models/user.model";
+import { BaseService } from "./base.service";
 
 @Injectable()
 export class PostService {
 
-  constructor(private loginService: LoginService) { }
+  constructor(
+    private loginService: LoginService,
+    private baseService: BaseService) { }
 
-  getPosts(): Observable<Array<Post>> {
-    return of([PostMock.mockPost1, PostMock.mockPost2]);
+  getPosts(): Observable<Array<any>> {
+    return this.baseService.http.get<any>('http://localhost:5000/api/roadmaps', this.baseService.Options);
   }
 
-  getPostsByUser(userId: string): Observable<Array<Post>> {
-    return of([PostMock.mockPost1, PostMock.mockPost2]);
+  getPostsByUser(username: string): Observable<any> {
+    return this.baseService.http.get<any>('http://localhost:5000/api/roadmaps/user/' + username, this.baseService.Options);
   }
 
-  getPostsByTag(tag: string): Observable<Array<Post>> {
-    return of([PostMock.mockPost1, PostMock.mockPost2]);
+  getPostsByTag(tag: string): Observable<any> {
+    return this.baseService.http.get<any>('http://localhost:5000/api/roadmaps/tag/' + tag, this.baseService.Options);
   }
 
-  createPost(name: string, description: string, tags: string, isPublic: boolean, coordiantes: Array<Coordinate>): Observable<boolean> {
-    let userId = this.loginService.loggedUser?.id;
-
-    return of(true);
+  getPostsByFollowing(): Observable<any> {
+    return this.baseService.http.get<any>('http://localhost:5000/api/roadmaps/following', this.baseService.Options);
   }
 
-  addComment(comment: string, postId: string): Observable<PostComment> {
-    let user = this.loginService.loggedUser;
 
-    console.log(comment, postId);
-    return of({author: user, comment: comment, createDate: new Date()});
+  createPost(name: string, description: string, tags: Array<string>, isPublic: boolean, coordinates: Array<Array<number>>): Observable<any> {
+    let username = this.loginService.loggedUser.username;
+
+    return this.baseService.http.post<any>('http://localhost:5000/api/roadmaps', {
+      username: username,
+      title: name,
+      description: description,
+      tags: tags,
+      coordinates: coordinates
+    }, this.baseService.Options);
   }
 
-  likePost(postId: string, liked: boolean) {
-    let userId = this.loginService.loggedUser?.id;
+  addComment(comment: string, postId: string): Observable<any> {
+    return this.baseService.http.post<any>('http://localhost:5000/api/comments/' + postId, {
+      text: comment
+    }, this.baseService.Options);
+  }
 
-    console.log(postId);
-    return true;
+  getComments(postId: string): Observable<Array<any>> {
+    return this.baseService.http.get<any>('http://localhost:5000/api/comments/' + postId, this.baseService.Options);
+  }
+
+  likePost(postId: string, liked: boolean): Observable<any> {
+    if(liked)
+      return this.baseService.http.put<any>('http://localhost:5000/api/roadmaps/like/' + postId, {}, this.baseService.Options);
+    else
+      return this.baseService.http.delete<any>('http://localhost:5000/api/roadmaps/like/' + postId, this.baseService.Options);
+  }
+
+  dislikePost(postId: string, dislikePost: boolean): Observable<any> {
+    if(dislikePost)
+      return this.baseService.http.put<any>('http://localhost:5000/api/roadmaps/dislike/' + postId, {}, this.baseService.Options);
+    else
+      return this.baseService.http.delete<any>('http://localhost:5000/api/roadmaps/dislike/' + postId, this.baseService.Options);
   }
 
   favoritePost(postId: string, favorite: boolean) {
-    let userId = this.loginService.loggedUser?.id;
+    let username = this.loginService.loggedUser;
 
     console.log(postId);
     return true;
+  }
+
+  checkLikedPost(postId: string) {
+    return this.baseService.http.get<any>('http://localhost:5000/api/roadmaps/like/' + postId, this.baseService.Options);
+  }
+
+  checkDislikedPost(postId: string) {
+    return this.baseService.http.get<any>('http://localhost:5000/api/roadmaps/dislike/' + postId, this.baseService.Options);
   }
 }

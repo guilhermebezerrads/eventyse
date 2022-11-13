@@ -60,7 +60,13 @@ export class CreatePostComponent implements OnInit, OnDestroy {
     let { name, description, tags, isPublic, coordinates } = this.createPostFromGroup.controls;
     this.router.navigate(['dashboard']);
 
-    this.postService.createPost(name.value, description.value, tags.value, isPublic.value, coordinates.value)
+    this.postService.createPost(
+      name.value,
+      description.value,
+      tags.value,
+      isPublic.value,
+      coordinates.value
+    )
     .pipe(takeUntil(this.destroy$))
     .subscribe(
       (isCreated) => {
@@ -74,7 +80,9 @@ export class CreatePostComponent implements OnInit, OnDestroy {
 
   setCoordinates(coordinates: Array<Coordinate>) {
     this.createPostFromGroup.get("coordinates")?.setValue(
-      coordinates
+      coordinates.map(
+        coord => [coord.x, coord.y]
+      )
     );
     this.createPostFromGroup.get("coordinates")?.updateValueAndValidity();
   }

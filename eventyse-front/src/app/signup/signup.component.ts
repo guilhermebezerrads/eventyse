@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, FormGroup, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 import { LoginService } from 'src/services/login.service';
+import { UserService } from 'src/services/user.service';
 
 @Component({
   selector: 'app-signup',
@@ -21,15 +23,30 @@ export class SignupComponent implements OnInit {
     return this.signupFromGroup.get('email');
   }
 
-  constructor(private loginService: LoginService, private router: Router) {}
+  destroy$: Subject<boolean> = new Subject<boolean>();
+
+  constructor(
+    private loginService: LoginService,
+    private userService: UserService,
+    private router: Router) {}
 
   ngOnInit(): void {
   }
 
   signUp() {
     let { avatar, email, name, password } = this.signupFromGroup.controls;
-    this.loginService.signUp(email.value, name.value, password.value, avatar.value);
-    this.router.navigate(['login']);
+    this.loginService.signUp(email.value, name.value, password.value, avatar.value)
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(
+      (result) => {
+        this.loginService.setToken(result.username, result.token);
+
+        this.userService.getUsers().pipe(takeUntil(this.destroy$)).subscribe(
+          (result) => console.log(result)
+        )
+
+        this.router.navigate(['dashboard']);
+      })
   }
 
   imageURL: string = "assets/avatar.png";
@@ -42,6 +59,11 @@ export class SignupComponent implements OnInit {
       this.imageURL = reader.result as string;
     }
     reader.readAsDataURL(file as Blob)
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
 
 }
