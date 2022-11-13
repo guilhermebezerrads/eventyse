@@ -1,7 +1,8 @@
 import { ExtendedUser, User } from '../models/user.model';
-import { EventEmitter } from '@angular/core';
+import { EventEmitter, Injectable, } from '@angular/core';
 import { UserMock } from 'src/shared/mocks/user.mock';
 
+@Injectable()
 export class LoginService {
   login: EventEmitter<any> = new EventEmitter();
 

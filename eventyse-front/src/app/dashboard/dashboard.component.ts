@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 import { Post } from 'src/models/post.model';
-import { PostMock } from 'src/shared/mocks/post.mock';
+import { PostService } from 'src/services/post.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,12 +10,23 @@ import { PostMock } from 'src/shared/mocks/post.mock';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor() { }
+  posts = new Array<Post>();
+
+  destroy$: Subject<boolean> = new Subject<boolean>();
+
+  constructor(private postService: PostService) { }
 
   ngOnInit(): void {
+    this.postService.getPosts()
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(
+      posts => this.posts = posts
+    );
   }
 
-  mockPost1 = PostMock.mockPost1;
-  mockPost2 = PostMock.mockPost2;
+  ngOnDestroy() {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
+  }
 
 }

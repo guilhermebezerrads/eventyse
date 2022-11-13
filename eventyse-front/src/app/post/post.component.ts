@@ -1,16 +1,16 @@
-import { Component, OnInit, Input, AfterViewChecked, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, AfterViewChecked, ChangeDetectorRef } from '@angular/core';
 import { Post } from 'src/models/post.model';
 import * as L from 'leaflet';
 import { PostService } from 'src/services/post.service';
 import { FormControl } from '@angular/forms';
-import { LoginService } from 'src/services/login.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-post',
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.scss']
 })
-export class PostComponent implements OnInit, AfterViewChecked {
+export class PostComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   @Input() post = new Post();
 
@@ -20,9 +20,10 @@ export class PostComponent implements OnInit, AfterViewChecked {
 
   commentControl = new FormControl("");
 
+  destroy$: Subject<boolean> = new Subject<boolean>();
+
   constructor(
     private postService: PostService,
-    private loginService: LoginService,
     private changeDetector : ChangeDetectorRef) { }
 
   ngOnInit(): void {
@@ -44,9 +45,9 @@ export class PostComponent implements OnInit, AfterViewChecked {
     this.isFavorite = !this.isFavorite;
 
     if (this.isFavorite)
-      this.postService.favoritePost(this.post.id, this.loginService.loggedUser.id, true);
+      this.postService.favoritePost(this.post.id, true);
     else
-      this.postService.favoritePost(this.post.id, this.loginService.loggedUser.id, false);
+      this.postService.favoritePost(this.post.id, false);
   }
 
   setLiked() {
@@ -54,9 +55,9 @@ export class PostComponent implements OnInit, AfterViewChecked {
 
     if (this.isLiked) {
       this.isDisliked = false;
-      this.postService.likePost(this.post.id, this.loginService.loggedUser.id, true);
+      this.postService.likePost(this.post.id, true);
     } else
-      this.postService.likePost(this.post.id, this.loginService.loggedUser.id, false);
+      this.postService.likePost(this.post.id, false);
   }
 
   setDisliked() {
@@ -64,15 +65,30 @@ export class PostComponent implements OnInit, AfterViewChecked {
 
     if (this.isDisliked) {
       this.isLiked = false;
-      this.postService.likePost(this.post.id, this.loginService.loggedUser.id, false);
+      this.postService.likePost(this.post.id, false);
     } else
-      this.postService.likePost(this.post.id, this.loginService.loggedUser.id, true);
+      this.postService.likePost(this.post.id, true);
   }
 
   comment() {
     if (this.commentControl.value) {
-      this.postService.addComment(this.commentControl.value, this.post.id, this.loginService.loggedUser.id);
+      this.postService.addComment(this.commentControl.value, this.post.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        (createdPost) => {
+          if (createdPost) {
+            window.alert("Comentário adicionado.");
+            this.post.comments.push(createdPost);
+            this.commentControl.reset();
+          }
+        }
+      );
     } else alert("Insira um comentário");
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
 
 }

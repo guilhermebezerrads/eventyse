@@ -1,5 +1,6 @@
-<app-post [post]="mockPost1"></app-post>
-<app-post [post]="mockPost2"></app-post>
+<div *ngFor="let post of posts">
+  <app-post [post]="post"></app-post>
+</div>
 <button class="create-post-btn" mat-raised-button color="primary" [routerLink]="['/create']">
   <mat-icon>add</mat-icon>
 </button>

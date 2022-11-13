@@ -11,12 +11,13 @@
       </div>
       <div class="profile-info-actions">
         <button mat-raised-button color="primary">Seguir</button>
-        <button mat-raised-button color="primary">Mensagem</button>
+        <button mat-raised-button color="primary" disabled>Mensagem</button>
       </div>
     </div>
 </div>
 <mat-divider></mat-divider>
 <div class="profile-posts">
-  <app-post [post]="mockPost1"></app-post>
-  <app-post [post]="mockPost2"></app-post>
+  <div *ngFor="let post of userPosts">
+    <app-post [post]="post"></app-post>
+  </div>
 </div>
