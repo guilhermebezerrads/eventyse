@@ -117,6 +117,7 @@ As classes de domínio estão divididas entre models, portas e serviços, e est�
 - Portas de saída: Interfaces de repositórios do usuário, roteiro, seguir e comentários. O objetivo dessas portas é informar aos adaptadores, por exemplo, implementação de banco de dados utilizando framework SQLAlchemy, quais os métodos que o domínio necessita em seus serviços.
 - Adaptadores: Os adaptadores utilizados foram a comunicação REST, definindo as rotas por meio de requisição HTTP, e o armazenamento das informações em um banco de dados, construído a partir do framework ORM SQLAlchemy.
 
+## Exemplos de código
 
 Porta de entrada relacionado aos comentários
 ```py
