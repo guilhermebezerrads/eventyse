@@ -70,7 +70,6 @@ class Comment(Base):
 
 class Coordinate(Base):
     __tablename__ = 'coordinate'
-    id = Column(String, primary_key=True)
     lati = Column(Float, nullable=False)
     long = Column(Float, nullable=False)
     roadmap_id = Column(String, ForeignKey('roadmap.id'), nullable=False)
