@@ -19,6 +19,8 @@ from adapters.db.SQLAlchemy import SQLiteDatabase
 from adapters.db.InMemoryUserRepository import InMemoryUserRepository
 from adapters.db.SQLAlchemyUserRepository import SQLAlchemyUserRepository
 from adapters.db.SQLAlchemyCommentRepository import SQLAlchemyCommentRepository
+from adapters.db.SQLAlchemyFollowRepository import SQLAlchemyFollowRepository
+from adapters.db.SQLAlchemyRoadmapRepository import SQLAlchemyRoadmapRepository
 from adapters.db.InMemoryFollowRepository import InMemoryFollowRepository
 from adapters.db.InMemoryRoadmapRepository import InMemoryRoadmapRepository
 from adapters.db.InMemoryCommentRepository import InMemoryCommentRepository
@@ -36,10 +38,10 @@ def configure_inject(api: Flask) -> None:
     def config(binder: inject.Binder) -> None:
         binder.bind(IDatabase, SQLiteDatabase(os.getenv('SQLALCHEMY_DATABASE_URI')))
         
-        binder.bind_to_constructor(IUserRepository, InMemoryUserRepository)
-        binder.bind_to_constructor(IFollowRepository, InMemoryFollowRepository)
-        binder.bind_to_constructor(IRoadmapRepository, InMemoryRoadmapRepository)
-        binder.bind_to_constructor(ICommentRepository, InMemoryCommentRepository)
+        binder.bind_to_constructor(IUserRepository, SQLAlchemyUserRepository)
+        binder.bind_to_constructor(IFollowRepository, SQLAlchemyFollowRepository)
+        binder.bind_to_constructor(IRoadmapRepository, SQLAlchemyRoadmapRepository)
+        binder.bind_to_constructor(ICommentRepository, SQLAlchemyCommentRepository)
 
         binder.bind_to_constructor(IUserService, UserService)
         binder.bind_to_constructor(IFollowService, FollowService)
