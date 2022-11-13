@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, AfterViewChecked, ChangeDetectorRef } from '@angular/core';
 import { Post } from 'src/models/post.model';
 import * as L from 'leaflet';
 
@@ -7,7 +7,7 @@ import * as L from 'leaflet';
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.scss']
 })
-export class PostComponent implements OnInit {
+export class PostComponent implements OnInit, AfterViewChecked {
 
   @Input() post = new Post();
 
@@ -15,10 +15,12 @@ export class PostComponent implements OnInit {
   isDisliked: boolean = false;
   isFavorite: boolean = false;
 
-  constructor() { }
+  constructor(private changeDetector : ChangeDetectorRef) { }
 
   ngOnInit(): void {
   }
+
+  ngAfterViewChecked(){ this.changeDetector.detectChanges(); }
 
   getPostMarkers(): Array<L.Marker> {
       let markers = new Array<L.Marker>();
