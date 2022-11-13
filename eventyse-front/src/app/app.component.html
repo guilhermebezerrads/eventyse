@@ -8,10 +8,10 @@
     </div>
     <input *ngIf="isLoggedIn" type="text" class="search" placeholder="Pesquisar por #Tag">
     <button *ngIf="isLoggedIn" mat-icon-button [matMenuTriggerFor]="menu" class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-      <img src="assets/palmirinha.png" alt="Avatar">
+      <img [src]="loggedAvatar" alt="Avatar">
     </button>
     <mat-menu #menu="matMenu" xPosition="before">
-      <button mat-menu-item [routerLink]="['profile']">
+      <button mat-menu-item [routerLink]="['profile', { id: loggedUserId }]">
         <mat-icon>person</mat-icon>
         <span>Perfil</span>
       </button>

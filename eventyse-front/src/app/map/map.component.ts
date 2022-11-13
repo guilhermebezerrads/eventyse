@@ -1,5 +1,7 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import * as L from 'leaflet';
+import { Coordinate } from 'src/models/coordinate.model';
+import { LocationService } from 'src/services/location.service';
 import { v4 as uuidv4 } from 'uuid';
 
 @Component({
@@ -15,6 +17,8 @@ export class MapComponent implements OnInit, AfterViewInit {
 
   @Input() readonly = false;
 
+  @Output() outCoordinates = new EventEmitter<Array<Coordinate>>();
+
   readonly mapid = uuidv4().toString();
 
   private readonly MARKER_ICON = L.icon({
@@ -23,17 +27,21 @@ export class MapComponent implements OnInit, AfterViewInit {
     popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
   });
 
-  constructor() { }
+  constructor(private locationService: LocationService) { }
 
   ngOnInit(): void {
   }
 
   ngAfterViewInit(): void {
-    this.initMap();
+    this.locationService.getPosition().then(pos=>
+    {
+      this.initMap(pos.lng, pos.lat);
+    });
+
   }
 
-  initMap() {
-    this.map = L.map(this.mapid).setView([51.505, -0.09], 13);
+  initMap(lng: any, lat: any) {
+    this.map = L.map(this.mapid).setView([lat, lng], 13);
 
     this.map.doubleClickZoom.disable();
 
@@ -73,6 +81,10 @@ export class MapComponent implements OnInit, AfterViewInit {
     this.map.removeLayer(e);
 
     this.markers = this.markers.filter(f => !f.getLatLng().equals(e.getLatLng()));
+
+    this.outCoordinates.emit(this.markers.map(
+      (marker) => { return {x: marker.getLatLng().lat, y: marker.getLatLng().lng} }
+    ));
   }
 
   addMarker(latlang: L.LatLng) {
@@ -81,5 +93,9 @@ export class MapComponent implements OnInit, AfterViewInit {
         icon: this.MARKER_ICON
       }).on('dblclick', this.markerOnDoubleClick, this)
       .addTo(this.map));
+
+    this.outCoordinates.emit(this.markers.map(
+      (marker) => { return {x: marker.getLatLng().lat, y: marker.getLatLng().lng} }
+    ));
   }
 }

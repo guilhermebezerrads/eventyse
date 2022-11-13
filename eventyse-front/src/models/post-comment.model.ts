@@ -1,7 +1,7 @@
-import { Person } from "./person.model";
+import { ExtendedUser } from "./user.model";
 
 export class PostComment {
-  author: Person = new Person();
+  author: ExtendedUser = new ExtendedUser();
   comment: string = "";
   createDate: Date = new Date();
 }

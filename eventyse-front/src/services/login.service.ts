@@ -1,19 +1,16 @@
-import { User } from '../models/user.model';
+import { ExtendedUser, User } from '../models/user.model';
 import { EventEmitter } from '@angular/core';
+import { UserMock } from 'src/shared/mocks/user.mock';
 
 export class LoginService {
-  loggedUser: User = new User();
-
   login: EventEmitter<any> = new EventEmitter();
 
   doLogin(username: string, password: string): void {
-    this.loggedUser = {username, password, name: '', avatar: 'assets/avatar.png', id: 1};
-    localStorage.setItem('currentUser', JSON.stringify(this.loggedUser));
+    localStorage.setItem('currentUser', JSON.stringify(UserMock.userMock1));
     this.login.emit(true);
   }
 
   doLogoff(): void {
-    this.loggedUser = new User();
     localStorage.removeItem('currentUser');
     this.login.emit(false);
   }
@@ -22,8 +19,12 @@ export class LoginService {
     return localStorage.getItem('currentUser') != null;
   }
 
-  signUp(user: User) {
+  signUp(username: string, name: string, password: string, avatar: string) {
     return true;
+  }
+
+  get loggedUser() {
+    return JSON.parse(localStorage.getItem('currentUser') || "") as ExtendedUser;
   }
 
   // doLogin(username: string, password: string) {

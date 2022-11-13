@@ -31,6 +31,9 @@ import { SignupComponent } from './signup/signup.component';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { ProfileComponent } from './profile/profile.component';
 import { CreatePostComponent } from './create-post/create-post.component';
+import { UserService } from 'src/services/user.service';
+import { LocationService } from 'src/services/location.service';
+import { PostService } from 'src/services/post.service';
 
 @NgModule({
   declarations: [
@@ -60,7 +63,7 @@ import { CreatePostComponent } from './create-post/create-post.component';
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [LoginService, AuthGuard],
+  providers: [LoginService, UserService, LocationService, PostService, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

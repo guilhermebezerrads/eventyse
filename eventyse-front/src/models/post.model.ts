@@ -1,9 +1,10 @@
 import { Map } from "./map.model";
-import { Person } from "./person.model";
 import { PostComment } from "./post-comment.model";
+import { ExtendedUser } from "./user.model";
 
 export class Post {
-  author: Person = new Person();
+  id: string = "";
+  author: ExtendedUser = new ExtendedUser();
   title: string = "";
   description: string = "";
   creationDate: Date = new Date();

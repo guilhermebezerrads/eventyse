@@ -2,7 +2,7 @@
   <h2>Nova Postagem</h2>
   <form class="create-post-form" [formGroup]="createPostFromGroup" (ngSubmit)="createPost()">
 
-    <app-map></app-map>
+    <app-map (outCoordinates)="setCoordinates($event)"></app-map>
 
     <mat-slide-toggle
       class="example-margin"

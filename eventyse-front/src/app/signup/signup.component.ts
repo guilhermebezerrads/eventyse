@@ -28,9 +28,7 @@ export class SignupComponent implements OnInit {
 
   signUp() {
     let { avatar, email, name, password } = this.signupFromGroup.controls;
-    this.loginService.signUp({
-      username: email.value, name: name.value, password: password.value, avatar: avatar.value, id: 1
-    })
+    this.loginService.signUp(email.value, name.value, password.value, avatar.value);
     this.router.navigate(['login']);
   }
 

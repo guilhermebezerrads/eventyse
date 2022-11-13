@@ -23,6 +23,14 @@ export class AppComponent {
     });
   }
 
+  get loggedUserId() {
+    return this.loginService.loggedUser?.id;
+  }
+
+  get loggedAvatar() {
+    return this.loginService.loggedUser.avatar;
+  }
+
   logOff() {
     this.loginService.doLogoff();
     this.router.navigate(['login']);

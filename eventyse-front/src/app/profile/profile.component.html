@@ -1,19 +1,19 @@
 <div class="profile-info-container">
-<img src="assets/avatar.png" alt="avatar"/>
-  <div class="profile-info">
-    <div class="profile-info-info">
-      <h2>Sasuke Uchiha</h2>
-      <div class="profile-info-stats">
-        <h3><b>34</b> Seguidores</h3>
-        <h3><b>22</b> Seguindo</h3>
-        <h3><b>754</b> Publicações</h3>
+  <img [src]="user.avatar" [alt]="user.name"/>
+    <div class="profile-info">
+      <div class="profile-info-info">
+        <h2>{{user.name}}</h2>
+        <div class="profile-info-stats">
+          <h3><b>{{user.followers}}</b> Seguidores</h3>
+          <h3><b>{{user.following}}</b> Seguindo</h3>
+          <h3><b>{{user.postsCount}}</b> Publicações</h3>
+        </div>
+      </div>
+      <div class="profile-info-actions">
+        <button mat-raised-button color="primary">Seguir</button>
+        <button mat-raised-button color="primary">Mensagem</button>
       </div>
     </div>
-    <div class="profile-info-actions">
-      <button mat-raised-button color="primary">Seguir</button>
-      <button mat-raised-button color="primary">Mensagem</button>
-    </div>
-  </div>
 </div>
 <mat-divider></mat-divider>
 <div class="profile-posts">

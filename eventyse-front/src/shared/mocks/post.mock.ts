@@ -1,10 +1,10 @@
 import { Post } from "src/models/post.model"
+import { UserMock } from "./user.mock"
 
 export class PostMock {
   static mockPost1: Post = {
-    author: {
-      name: "Sasuke", profileImage: "assets/palmirinha.png"
-    },
+    id: "post1",
+    author: UserMock.userMock1,
     title: "Melhores pães de queijo de Boston",
     description: "Oi pessoal, visitei Boston recentemente e marquei aqui os melhores pães de queijo da cidade! Eu amo demais demais demais pão de queijo!",
     creationDate: new Date(2022, 1, 1, 13, 13),
@@ -13,16 +13,12 @@ export class PostMock {
     countLike: 123,
     comments: [
       {
-        author: {
-          name: "Sasuke", profileImage: "assets/palmirinha.png"
-        },
+        author: UserMock.userMock1,
         comment: "Odeio pão de queijo!",
         createDate: new Date(2022, 1, 1, 23, 13)
       },
       {
-        author: {
-          name: "Sasuke", profileImage: "assets/palmirinha.png"
-        },
+        author: UserMock.userMock1,
         comment: "Amo pão de queijo!",
         createDate: new Date(2022, 1, 1, 23, 35)
       },
@@ -39,9 +35,8 @@ export class PostMock {
   }
 
   static mockPost2: Post = {
-    author: {
-      name: "Sasuke", profileImage: "assets/palmirinha.png"
-    },
+    id: "post2",
+    author: UserMock.userMock1,
     title: "Melhores pães de queijo de Boston",
     description: "Oi pessoal, visitei Boston recentemente e marquei aqui os melhores pães de queijo da cidade!",
     creationDate: new Date(2022, 1, 1, 13, 13),
@@ -50,16 +45,12 @@ export class PostMock {
     countLike: 123,
     comments: [
       {
-        author: {
-          name: "Sasuke", profileImage: "assets/palmirinha.png"
-        },
+        author: UserMock.userMock1,
         comment: "Odeio pão de queijo!",
         createDate: new Date(2022, 1, 1, 23, 13)
       },
       {
-        author: {
-          name: "Sasuke", profileImage: "assets/palmirinha.png"
-        },
+        author: UserMock.userMock1,
         comment: "Amo pão de queijo!",
         createDate: new Date(2022, 1, 1, 23, 35)
       },

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { LoginService } from 'src/services/login.service';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
+import { Coordinate } from 'src/models/coordinate.model';
 
 @Component({
   selector: 'app-create-post',
@@ -19,6 +20,7 @@ export class CreatePostComponent implements OnInit {
     description: new FormControl('', [Validators.required]),
     tags: new FormControl([]),
     isPublic: new FormControl(''),
+    coordinates: new FormControl([], [Validators.required])
   });
 
   constructor(private router: Router) {}
@@ -53,10 +55,16 @@ export class CreatePostComponent implements OnInit {
     }
   }
 
-
   createPost() {
-    let { name, description, tags, isPublic } = this.createPostFromGroup.controls;
+    let { name, description, tags, isPublic, coordinates } = this.createPostFromGroup.controls;
     this.router.navigate(['dashboard']);
+  }
+
+  setCoordinates(coordinates: Array<Coordinate>) {
+    this.createPostFromGroup.get("coordinates")?.setValue(
+      coordinates
+    );
+    this.createPostFromGroup.get("coordinates")?.updateValueAndValidity();
   }
 }
 

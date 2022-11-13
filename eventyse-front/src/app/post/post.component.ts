@@ -1,6 +1,9 @@
 import { Component, OnInit, Input, AfterViewChecked, ChangeDetectorRef } from '@angular/core';
 import { Post } from 'src/models/post.model';
 import * as L from 'leaflet';
+import { PostService } from 'src/services/post.service';
+import { FormControl } from '@angular/forms';
+import { LoginService } from 'src/services/login.service';
 
 @Component({
   selector: 'app-post',
@@ -15,7 +18,12 @@ export class PostComponent implements OnInit, AfterViewChecked {
   isDisliked: boolean = false;
   isFavorite: boolean = false;
 
-  constructor(private changeDetector : ChangeDetectorRef) { }
+  commentControl = new FormControl("");
+
+  constructor(
+    private postService: PostService,
+    private loginService: LoginService,
+    private changeDetector : ChangeDetectorRef) { }
 
   ngOnInit(): void {
   }
@@ -34,18 +42,37 @@ export class PostComponent implements OnInit, AfterViewChecked {
 
   setFavorite() {
     this.isFavorite = !this.isFavorite;
+
+    if (this.isFavorite)
+      this.postService.favoritePost(this.post.id, this.loginService.loggedUser.id, true);
+    else
+      this.postService.favoritePost(this.post.id, this.loginService.loggedUser.id, false);
   }
 
   setLiked() {
     this.isLiked = !this.isLiked;
 
-    if (this.isLiked) this.isDisliked = false;
+    if (this.isLiked) {
+      this.isDisliked = false;
+      this.postService.likePost(this.post.id, this.loginService.loggedUser.id, true);
+    } else
+      this.postService.likePost(this.post.id, this.loginService.loggedUser.id, false);
   }
 
   setDisliked() {
     this.isDisliked = !this.isDisliked;
 
-    if (this.isDisliked) this.isLiked = false;
+    if (this.isDisliked) {
+      this.isLiked = false;
+      this.postService.likePost(this.post.id, this.loginService.loggedUser.id, false);
+    } else
+      this.postService.likePost(this.post.id, this.loginService.loggedUser.id, true);
+  }
+
+  comment() {
+    if (this.commentControl.value) {
+      this.postService.addComment(this.commentControl.value, this.post.id, this.loginService.loggedUser.id);
+    } else alert("Insira um comentário");
   }
 
 }
