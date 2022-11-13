@@ -4,48 +4,48 @@ from domain.models.Roadmap import Roadmap
 class IRoadmapRepository(ABC):
     @abstractmethod
     def create(self, roadmap: Roadmap) -> Roadmap:
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def find_all(self) -> list[Roadmap]:
-        pass
+        raise NotImplementedError
     
     @abstractmethod
     def find_by_id(self, roadmap_id: str) -> Roadmap:
-        pass
+        raise NotImplementedError
     
     @abstractmethod
     def is_liked(self, username: str, roadmap_id: str) -> bool:
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def add_like(self, username: str, roadmap_id: str) -> None:
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def remove_like(self, username: str, roadmap_id: str) -> None:
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def is_disliked(self, username: str, roadmap_id: str) -> bool:
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def add_dislike(self, username: str, roadmap_id: str) -> None:
-        pass
+        raise NotImplementedError
     
     @abstractmethod
     def remove_dislike(self, username: str, roadmap_id: str) -> None:
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def find_all_by_username(self, username: str) -> list[Roadmap]:
-        pass
+        raise NotImplementedError
     
     @abstractmethod
     def find_all_by_following(self, username: str) -> list[Roadmap]:
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def find_all_by_tags(self, tags: list[str]) -> list[Roadmap]:
-        pass
+        raise NotImplementedError

@@ -5,8 +5,8 @@ from domain.models.User import User
 class ITokenService(ABC):
     @abstractmethod
     def authenticate_token(self, token: str):
-        pass
+        raise NotImplementedError
     
     @abstractmethod
     def create_token(self, user: User):
-        pass
+        raise NotImplementedError
