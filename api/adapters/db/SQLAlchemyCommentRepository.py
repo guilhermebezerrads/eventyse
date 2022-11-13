@@ -19,7 +19,7 @@ class SQLAlchemyCommentRepository(ICommentRepository):
         self.session.add(comment_db)
         self.session.commit()
 
-        return comment
+        return comment_db_to_comment_model(comment)
 
     def find_by_id(self, comment_id: str) -> Comment:
         comment_db = self.session.query(SQLAlchemy.Comment).filter_by(id=comment_id).first()

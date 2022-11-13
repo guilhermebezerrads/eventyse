@@ -1,11 +1,11 @@
-from sqlalchemy import String, Float, Integer, ForeignKey, create_engine, Column, DateTime, Boolean, Table
+from sqlalchemy import String, Float, Integer, Sequence, ForeignKey, create_engine, Column, DateTime, Boolean, Table
 from sqlalchemy.orm import relationship, declarative_base, sessionmaker
 
 from adapters.db.interfaces.IDatabase import IDatabase
 
 Base = declarative_base()
 
-followers = Table(
+following = Table(
             'following',
             Base.metadata,
             Column('username', ForeignKey('user.username'), nullable=False),
@@ -33,9 +33,9 @@ class User(Base):
     roadmaps = relationship("Roadmap")
     following = relationship(
         'User',
-        secondary=followers,
-        primaryjoin=followers.c.username == username,
-        secondaryjoin=followers.c.target_username == username,
+        secondary=following,
+        primaryjoin=following.c.username == username,
+        secondaryjoin=following.c.target_username == username,
     )
 
 tags = Table(
@@ -70,6 +70,7 @@ class Comment(Base):
 
 class Coordinate(Base):
     __tablename__ = 'coordinate'
+    id = Column(Integer, primary_key=True)
     lati = Column(Float, nullable=False)
     long = Column(Float, nullable=False)
     roadmap_id = Column(String, ForeignKey('roadmap.id'), nullable=False)

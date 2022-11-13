@@ -1,5 +1,6 @@
 from domain.models.User import User
 from domain.models.Comment import Comment
+from domain.models.Roadmap import Roadmap
 
 from adapters.db import SQLAlchemy
 
@@ -44,3 +45,35 @@ def comment_model_to_comment_db(comment: Comment) -> SQLAlchemy.Comment:
         text = comment.text,
         created_date = comment.created_date
     )
+
+def roadmap_db_to_roadmap_model(roadmap_db: SQLAlchemy.Roadmap) -> Roadmap:
+    coord_list = []
+    for coord in roadmap_db.coordinates:
+        coord_list.append([coord.lati, coord.long])
+
+    tag_list = []
+    for tag in roadmap_db.tags:
+        tag_list.append(tag.name)   
+    
+    return Roadmap(
+        id = roadmap_db.id,
+        author_username = roadmap_db.author_username,
+        title = roadmap_db.title,
+        description = roadmap_db.description,
+        created_date = roadmap_db.created_date,
+        likes = roadmap_db.likes,
+        dislikes = roadmap_db.dislikes,
+        coordinates=coord_list,
+        tags=tag_list
+    )
+
+def roadmap_model_to_roadmap_db(roadmap: Roadmap) -> Roadmap:
+    return SQLAlchemy.Roadmap(
+        id = roadmap.id,
+        author_username = roadmap.author_username,
+        title = roadmap.title,
+        description = roadmap.description,
+        created_date = roadmap.created_date,
+        likes = roadmap.likes,
+        dislikes = roadmap.dislikes
+    ), roadmap.coordinates, roadmap.tags
