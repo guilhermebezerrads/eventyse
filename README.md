@@ -93,6 +93,27 @@
 - Implementar rota buscaRoteiro [Gabriel]
 
 
+#Arquitetura do Sistema - Hexagonal
+
+As classes de domínio foram separadas das classes relacionadas à tecnologia e infraestrutura do projeto. Como parte do domínio temos os models para usuário, roadmap e comentários, assim como os serviços associados à eles, que implementam funcionalidades como geração de novos posts, login e registro de contas, like/deslike e etc. 
+
+Essa separação nos permite isolar a lógica interna do sistema das tecnologias utilizadas, como no caso dos repositórios, que integra a lógica interna do sistema com o banco de dados.
+
+As classes de domínio estão divididas entre models, portas e serviços, e estão incluídas dentro do diretório api/domain. Além disso, cada categoria tem sua própria pasta na raíz de domain, /ports, /models e /services. Quanto aos adaptadores e lógica de frameworks externos, estão localizados no diretório api/adapters, e dentro deste temos a divisão de /rest/controllers, que fazem a intermediação http com o domínio, enquanto em /db temos a implementação dos repositórios que comunicam com a framework de banco de dados utilizada, no caso o SQLAlchemy.
+
+##Por que o sistema está adotando essa arquitetura?
+
+- Facilita a testabilidade;
+- É flexível, pois, como o domínio é separado dos detalhes (como tecnologia), é mais fácil alterar os detalhes sem precisar alterar o domínio;
+- Foco no domínio da aplicação;
+- É agnóstico em relação à tecnologia.
+
+##Quais são as portas e adaptadores? Qual o objetivo deles?
+- Portas de entrada: Interfaces de serviços do usuário, token, roteiro, seguir e comentários. O objetivo dessas portas é informar aos adaptadores, por exemplo, implementação da comunicação REST, quais são os métodos disponíveis na aplicação.
+- Portas de saída: Interfaces de repositórios do usuário, roteiro, seguir e comentários. O objetivo dessas portas é informar aos adaptadores, por exemplo, implementação de banco de dados utilizando framework SQLAlchemy, quais os métodos que o domínio necessita em seus serviços.
+- Adaptadores: Os adaptadores utilizados foram a comunicação REST, definindo as rotas por meio de requisição HTTP, e o armazenamento das informações em um banco de dados, construído a partir do framework ORM SQLAlchemy.
+
+
 Porta de entrada relacionado aos comentários
 ```py
 from abc import ABC, abstractmethod
