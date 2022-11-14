@@ -15,12 +15,14 @@ export class PostMock {
       {
         author: "",
         comment: "Odeio pão de queijo!",
-        createDate: new Date(2022, 1, 1, 23, 13)
+        createDate: new Date(2022, 1, 1, 23, 13),
+        id: ""
       },
       {
         author: "UserMock.userMock1",
         comment: "Amo pão de queijo!",
-        createDate: new Date(2022, 1, 1, 23, 35)
+        createDate: new Date(2022, 1, 1, 23, 35),
+        id: ""
       },
     ],
     map: {
@@ -47,12 +49,14 @@ export class PostMock {
       {
         author: "UserMock.userMock1",
         comment: "Odeio pão de queijo!",
-        createDate: new Date(2022, 1, 1, 23, 13)
+        createDate: new Date(2022, 1, 1, 23, 13),
+        id: ""
       },
       {
         author: "UserMock.userMock1",
         comment: "Amo pão de queijo!",
-        createDate: new Date(2022, 1, 1, 23, 35)
+        createDate: new Date(2022, 1, 1, 23, 35),
+        id: ""
       },
     ],
     map: {

@@ -10,11 +10,8 @@
     <button mat-raised-button color="primary" (click)="file.click()">Upload file</button> -->
 
     <mat-form-field class="example-full-width" appearance="outline">
-      <mat-label>Email</mat-label>
-      <input type="email" matInput formControlName="email" placeholder="pat@example.com">
-      <mat-error *ngIf="emailFormControl?.hasError('email') && !emailFormControl?.hasError('required')">
-        Por favor, entre um email válido.
-      </mat-error>
+      <mat-label>Usuário</mat-label>
+      <input type="email" matInput formControlName="email" placeholder="Usuário">
     </mat-form-field>
 
     <mat-form-field class="example-full-width" appearance="outline">

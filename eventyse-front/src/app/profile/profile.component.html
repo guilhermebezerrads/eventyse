@@ -1,5 +1,6 @@
 <div class="profile-info-container">
-  <img [src]="user.avatar" [alt]="user.name"/>
+  <!-- <img [src]="user.avatar" [alt]="user.name"/> -->
+    <ngx-avatar [name]="user.username" size="200"></ngx-avatar>
     <div class="profile-info">
       <div class="profile-info-info">
         <h2>{{user.name}}</h2>

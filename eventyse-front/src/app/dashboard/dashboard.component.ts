@@ -22,6 +22,7 @@ export class DashboardComponent implements OnInit {
   private filterSubscriber: any;
 
   isFilteringByTag: boolean = false;
+  isFilteringByFollowers: boolean = false;
 
   ngOnInit(): void {
     this.filterSubscriber = this.route.params.subscribe(params => {
@@ -55,6 +56,7 @@ export class DashboardComponent implements OnInit {
           }
         );
       } else if (filterFollow) {
+        this.isFilteringByFollowers = true;
         this.postService.getPostsByFollowing()
         .pipe(takeUntil(this.destroy$))
         .subscribe(
@@ -80,6 +82,9 @@ export class DashboardComponent implements OnInit {
           }
         );
       } else {
+        this.isFilteringByTag = false;
+        this.isFilteringByFollowers = false;
+
         this.postService.getPosts()
         .pipe(takeUntil(this.destroy$))
         .subscribe(
@@ -113,7 +118,7 @@ export class DashboardComponent implements OnInit {
     this.destroy$.unsubscribe();
   }
 
-  redirectTo(uri: string, params = {}){
+  redirectTo(uri: string, params = {}) {
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(()=>
     this.router.navigate([uri, params]));
  }

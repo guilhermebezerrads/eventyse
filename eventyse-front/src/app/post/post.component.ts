@@ -4,6 +4,8 @@ import * as L from 'leaflet';
 import { PostService } from 'src/services/post.service';
 import { FormControl } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
+import { PostComment } from 'src/models/post-comment.model';
+import { LoginService } from 'src/services/login.service';
 
 @Component({
   selector: 'app-post',
@@ -24,6 +26,7 @@ export class PostComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   constructor(
     private postService: PostService,
+    private loginService: LoginService,
     private changeDetector : ChangeDetectorRef) { }
 
   ngOnInit(): void {
@@ -36,7 +39,8 @@ export class PostComponent implements OnInit, OnDestroy, AfterViewChecked {
             return {
               comment: c.text,
               createDate: c.createdDate,
-              author: c.authorUsername
+              author: c.authorUsername,
+              id: c.id
             }
           }
         )
@@ -140,11 +144,11 @@ export class PostComponent implements OnInit, OnDestroy, AfterViewChecked {
       .subscribe(
         (c) => {
           if (c) {
-            window.alert("Comentário adicionado.");
             this.post.comments.push({
               comment: c.text,
               createDate: c.createdDate,
-              author: c.authorUsername
+              author: c.authorUsername,
+              id: c.id
             });
             this.commentControl.reset();
           }
@@ -156,6 +160,24 @@ export class PostComponent implements OnInit, OnDestroy, AfterViewChecked {
   ngOnDestroy() {
     this.destroy$.next(true);
     this.destroy$.unsubscribe();
+  }
+
+  myComment(comment: PostComment): boolean {
+    return comment.author == this.loginService.loggedUser.username;
+  }
+
+  deleteComment(comment: PostComment) {
+    this.postService.removeComment(comment.id)
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(
+      (result) => {
+        let commentIndex = this.post.comments.findIndex(c => c.id == comment.id);
+
+        if (commentIndex != -1) {
+          this.post.comments.splice(commentIndex, 1);
+        }
+      }
+    )
   }
 
 }

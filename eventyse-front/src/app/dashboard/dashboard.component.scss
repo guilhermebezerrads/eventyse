@@ -24,7 +24,11 @@
         color: #43a047;
       }
 
-      &:active {
+      &:visited {
+        color: unset;
+      }
+
+      &.active {
         color: #43a047;
       }
     }

@@ -12,7 +12,7 @@ import { Subject, takeUntil } from 'rxjs';
 export class LoginComponent implements OnInit {
 
   loginFromGroup = new FormGroup({
-    email: new FormControl('', [Validators.required, Validators.email]),
+    email: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required]),
   });
 

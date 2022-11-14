@@ -54,7 +54,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
           .pipe(takeUntil(this.destroy$))
           .subscribe(
             (posts) => {
-              console.log(posts);
+              this.user.postsCount = (posts.roadmaps as Array<any>).length;
               this.userPosts = (posts.roadmaps as Array<any>).map(
                 (p) => {
                   return {

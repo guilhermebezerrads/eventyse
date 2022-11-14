@@ -1,7 +1,8 @@
 <div class="container">
   <div class="title">
     <a [routerLink]="['/profile', { id: post.author.username }]">
-      <img [src]="" alt="Avatar">
+      <!-- <img [src]="" alt="Avatar"> -->
+      <ngx-avatar [name]="post.author.username"></ngx-avatar>
     </a>
     <h1>{{post.title}}</h1>
   </div>
@@ -31,15 +32,22 @@
   <mat-divider></mat-divider>
   <div *ngFor="let comment of post.comments" class="comment-container">
     <div class="comment">
-      <img [src]="" alt="Avatar">
-      <div class="comment-comment">
-        <div><span class="comment-author">
-          <a [routerLink]="['/profile', { id: comment.author }]">{{comment.author}}</a>
-        </span>
-          <span class="comment-createDate">{{comment.createDate}}</span>
+      <!-- <img [src]="" alt="Avatar"> -->
+      <div class="comment-details">
+        <ngx-avatar [name]="comment.author"></ngx-avatar>
+        <div class="comment-comment">
+          <div>
+            <span class="comment-author">
+              <a [routerLink]="['/profile', { id: comment.author }]">{{comment.author}}</a>
+            </span>
+            <span class="comment-createDate">{{comment.createDate}}</span>
+          </div>
+          <span class="comment-description">{{comment.comment}}</span>
         </div>
-        <span class="comment-description">{{comment.comment}}</span>
       </div>
+      <button mat-icon-button *ngIf="myComment(comment)" (click)="deleteComment(comment)">
+        <mat-icon>delete</mat-icon>
+      </button>
     </div>
     <mat-divider></mat-divider>
   </div>

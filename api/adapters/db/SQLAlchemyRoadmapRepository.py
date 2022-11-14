@@ -64,7 +64,7 @@ class SQLAlchemyRoadmapRepository(IRoadmapRepository):
         return roadmap_db_to_roadmap_model(roadmap_db)
 
     def find_all(self) -> list[Roadmap]:
-        roadmaps_db = self.session.query(SQLAlchemy.Roadmap).all()
+        roadmaps_db = self.session.query(SQLAlchemy.Roadmap).order_by(SQLAlchemy.Roadmap.created_date.desc()).all()
 
         roadmaps = []
 
@@ -74,7 +74,7 @@ class SQLAlchemyRoadmapRepository(IRoadmapRepository):
         return roadmaps
 
     def find_all_by_username(self, username: str) -> list[Roadmap]:
-        user_roadmaps_db = self.session.query(SQLAlchemy.Roadmap).filter_by(author_username=username).all()
+        user_roadmaps_db = self.session.query(SQLAlchemy.Roadmap).filter_by(author_username=username).order_by(SQLAlchemy.Roadmap.created_date.desc()).all()
         user_roadmaps: list[Roadmap] = []
 
         for roadmap_db in user_roadmaps_db:
@@ -91,7 +91,7 @@ class SQLAlchemyRoadmapRepository(IRoadmapRepository):
         for user in users_following:
             usernames.append(user.target_username)
 
-        following_roadmaps_db = self.session.query(SQLAlchemy.Roadmap).filter(SQLAlchemy.Roadmap.author_username.in_(usernames)).all()
+        following_roadmaps_db = self.session.query(SQLAlchemy.Roadmap).filter(SQLAlchemy.Roadmap.author_username.in_(usernames)).order_by(SQLAlchemy.Roadmap.created_date.desc()).all()
 
         following_roadmaps = []
         for roadmap_db in following_roadmaps_db:
@@ -107,7 +107,7 @@ class SQLAlchemyRoadmapRepository(IRoadmapRepository):
         for tag in tags_db:
             roadmap_ids.append(tag.roadmap_id)
 
-        roadmaps_db = self.session.query(SQLAlchemy.Roadmap).filter(SQLAlchemy.Roadmap.id.in_(roadmap_ids)).all()
+        roadmaps_db = self.session.query(SQLAlchemy.Roadmap).filter(SQLAlchemy.Roadmap.id.in_(roadmap_ids)).order_by(SQLAlchemy.Roadmap.created_date.desc()).all()
 
         for roadmap_db in roadmaps_db:
             tags_roadmaps.append(roadmap_db_to_roadmap_model(roadmap_db))

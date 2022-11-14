@@ -11,7 +11,8 @@
       <input type="submit" hidden />
     </form>
     <button *ngIf="isLoggedIn" mat-icon-button [matMenuTriggerFor]="menu" class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-      <img [src]="loggedAvatar" alt="Avatar">
+      <!-- <img [src]="loggedAvatar" alt="Avatar"> -->
+      <ngx-avatar [name]="loggedUsername" size="40"></ngx-avatar>
     </button>
     <mat-menu #menu="matMenu" xPosition="before">
       <button mat-menu-item [routerLink]="['profile', { id: loggedUsername }]">

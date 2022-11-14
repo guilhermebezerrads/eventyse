@@ -20,7 +20,6 @@ export class CreatePostComponent implements OnInit, OnDestroy {
     name: new FormControl('', [Validators.required]),
     description: new FormControl('', [Validators.required]),
     tags: new FormControl([]),
-    isPublic: new FormControl(''),
     coordinates: new FormControl([], [Validators.required])
   });
 
@@ -58,13 +57,12 @@ export class CreatePostComponent implements OnInit, OnDestroy {
 
   createPost() {
     let { name, description, tags, isPublic, coordinates } = this.createPostFromGroup.controls;
-    this.router.navigate(['dashboard']);
 
     this.postService.createPost(
       name.value,
       description.value,
       tags.value,
-      isPublic.value,
+      true,
       coordinates.value
     )
     .pipe(takeUntil(this.destroy$))

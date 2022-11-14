@@ -38,6 +38,8 @@ import { PostService } from 'src/services/post.service';
 import { HttpClientModule } from '@angular/common/http';
 import { BaseService } from 'src/services/base.service';
 
+import { AvatarModule } from 'ngx-avatar';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -65,7 +67,8 @@ import { BaseService } from 'src/services/base.service';
     MatSlideToggleModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    AvatarModule
   ],
   providers: [LoginService, UserService, LocationService, PostService, BaseService, AuthGuard],
   bootstrap: [AppComponent]

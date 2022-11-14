@@ -31,7 +31,6 @@ export class PostService {
     return this.baseService.http.get<any>('http://localhost:5000/api/roadmaps/following', this.baseService.Options);
   }
 
-
   createPost(name: string, description: string, tags: Array<string>, isPublic: boolean, coordinates: Array<Array<number>>): Observable<any> {
     let username = this.loginService.loggedUser.username;
 
@@ -48,6 +47,10 @@ export class PostService {
     return this.baseService.http.post<any>('http://localhost:5000/api/comments/' + postId, {
       text: comment
     }, this.baseService.Options);
+  }
+
+  removeComment(commentId: string): Observable<any> {
+    return this.baseService.http.delete<any>('http://localhost:5000/api/comments/' + commentId, this.baseService.Options);
   }
 
   getComments(postId: string): Observable<Array<any>> {

@@ -4,13 +4,6 @@
 
     <app-map (outCoordinates)="setCoordinates($event)"></app-map>
 
-    <mat-slide-toggle
-      class="example-margin"
-      color="primary"
-      formControlName="isPublic">
-      Público
-    </mat-slide-toggle>
-
     <mat-form-field class="example-full-width" appearance="outline">
       <mat-label>Nome</mat-label>
       <input type="text" matInput formControlName="name" placeholder="Nome">

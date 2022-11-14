@@ -13,6 +13,7 @@
 
     h1 {
       margin: 0;
+      margin-left: 10px;
     }
   }
 
@@ -54,6 +55,7 @@
     display: flex;
     align-items: center;
     padding: 1em 0;
+    justify-content: space-between;
 
     &-author {
       font-weight: bold;
@@ -98,11 +100,23 @@
       color: red;
     }
 
-    &.liked, &.disliked {
+    &.liked {
       color: limegreen;
     }
 
+    &.disliked {
+      color: red;
+    }
+
     transition: color 0.3s ease;
+  }
+
+  .comment-comment {
+    margin-left: 15px;
+  }
+
+  .comment-details {
+    display: flex;
   }
 }
 
