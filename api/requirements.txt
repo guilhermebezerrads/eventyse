@@ -5,3 +5,4 @@ pyjwt==2.6.0
 python-dotenv==0.21.0
 dataclasses-json==0.5.7
 sqlalchemy==1.4.43
+Flask-Cors==3.0.10
