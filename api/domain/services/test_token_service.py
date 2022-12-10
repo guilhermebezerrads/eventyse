@@ -28,7 +28,7 @@ def test_token_service_create_token(setup):
 
     token = token_service.create_token(user)
 
-    assert type(token) == int
+    assert type(token) == str
 
 
 def test_token_service_authenticate_token_successfully(setup):
