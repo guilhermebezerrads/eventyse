@@ -89,6 +89,9 @@ def test_find_by_id(createDB):
     roadmap_model = createDB.find_by_id(roadmap.id)
     assert roadmap_model.id == roadmap.id
 
+    roadmap_model = createDB.find_by_id(-1)
+    assert roadmap_model == None
+
 @pytest.mark.integtest
 def test_find_by_username(createDB):
     roadmaps = createDB.find_all_by_username('carlinhos')

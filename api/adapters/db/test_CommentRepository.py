@@ -64,6 +64,9 @@ def test_find_by_id(createDB):
     comment_model = createDB[0].find_by_id(createDB[2].id)
     assert comment_model.id == createDB[2].id
 
+    comment_model = createDB[0].find_by_id(-1)
+    assert comment_model == None
+
 @pytest.mark.integtest
 def test_find_all_by_roadmap_id(createDB):
     roadmap = createDB[1].find_all_by_username('carlinhos')[0]
