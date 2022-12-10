@@ -10,16 +10,15 @@ on:
 jobs:
   pipeline:
     runs-on: ubuntu-latest 
-
     steps:
-      - name: Git Checkout
+    - name: Git Checkout
       uses: actions/checkout@v3
-      
-      - name: Set up Python 3.9
+
+    - name: Set up Python 3.9
       - uses: actions/setup-python@v4
       with:
-      python-version: '3.9' 
-      cache: 'pip'
+        python-version: '3.9' 
+        cache: 'pip'
       - run: pip install -r requirements.txt
 
       - name: Build
