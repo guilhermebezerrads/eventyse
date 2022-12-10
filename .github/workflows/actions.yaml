@@ -1,0 +1,29 @@
+name: Github CI
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest 
+
+    steps:
+      - name: Git Checkout
+        uses: actions/checkout@v3 
+
+      - name: Set up Python
+        - uses: actions/setup-python@v4
+          with:
+              python-version: '3.9' 
+              cache: 'pip'
+      - run: pip install -r requirements.txt
+
+      - name: Build
+        run: python api/main.py
+
+      - name: Unit Test
+        run: coverage run -m pytest

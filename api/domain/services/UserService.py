@@ -48,8 +48,6 @@ class UserService(IUserService):
             raise MissingFieldException('missing username or password field')
 
         user = self.find_by_username(username)
-        if not user:
-            raise NotFoundException('user not found')
         
         if not self.is_password_correct(user, try_password):
             raise UnauthorizedException('invalid password')
