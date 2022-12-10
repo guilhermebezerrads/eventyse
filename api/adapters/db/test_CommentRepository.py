@@ -59,6 +59,9 @@ def createDB():
     repoUser.session.query(SQLAlchemy.Comment).delete()
     repoUser.session.commit()
 
+    repoUser.session.query(SQLAlchemy.Tag).delete()
+    repoUser.session.commit()
+
 @pytest.mark.integtest
 def test_find_by_id(createDB):
     comment_model = createDB[0].find_by_id(createDB[2].id)

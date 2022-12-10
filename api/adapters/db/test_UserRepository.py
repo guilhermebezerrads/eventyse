@@ -39,6 +39,9 @@ def createDB():
     repo.session.query(SQLAlchemy.User).delete()
     repo.session.commit()
 
+    repo.session.query(SQLAlchemy.Tag).delete()
+    repo.session.commit()
+
 @pytest.mark.integtest
 def test_find_existing_username(createDB):
     user_model = createDB.find_by_username('carlinhos')
