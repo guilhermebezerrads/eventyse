@@ -4,6 +4,9 @@ on: [push]
 
 jobs:
   build:
+    defaults: 
+      run: 
+        working-directory: api
 
     runs-on: ubuntu-latest
     strategy:
@@ -13,7 +16,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
-        working-directory: ./api
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
