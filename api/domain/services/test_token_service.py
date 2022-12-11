@@ -61,3 +61,13 @@ def test_token_service_authenticate_token_invalid(setup):
 
         token = token_service.create_token(user)
         user2 = token_service.authenticate_token(token)
+
+def test_token_service_authenticate_token_expired(setup):
+    token_service, user_service = setup
+
+    user = user_service.create("Marco", "marco", "123456")
+
+    token = token_service.create_token(user, True)
+
+    with pytest.raises(TokenException):
+        user2 = token_service.authenticate_token(token)

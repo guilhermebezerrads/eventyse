@@ -33,7 +33,7 @@ class TokenService(ITokenService):
         return current_user
     
 
-    def create_token(self, user: User):
+    def create_token(self, user: User, test = False):
         env_key = os.environ.get('SECRET_KEY')
         token = jwt.encode(
             {
@@ -43,4 +43,13 @@ class TokenService(ITokenService):
             env_key,
             algorithm="HS256"
         )
+        if test:
+            token = jwt.encode(
+                {
+                    'username': user.username,
+                    'exp': datetime.datetime.now(),
+                },
+                env_key,
+                algorithm="HS256"
+            )
         return token
