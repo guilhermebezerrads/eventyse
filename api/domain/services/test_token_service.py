@@ -1,5 +1,5 @@
 import pytest
-import os
+import os, datetime
 from adapters.db.InMemoryUserRepository import InMemoryUserRepository
 from TokenService import TokenService
 from UserService import UserService
@@ -67,7 +67,7 @@ def test_token_service_authenticate_token_expired(setup):
 
     user = user_service.create("Marco", "marco", "123456")
 
-    token = token_service.create_token(user, True)
+    token = token_service.create_token(user, datetime.datetime.now() - datetime.timedelta(hours=24))
 
     with pytest.raises(TokenException):
         user2 = token_service.authenticate_token(token)
