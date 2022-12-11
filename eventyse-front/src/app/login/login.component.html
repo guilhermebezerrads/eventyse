@@ -3,15 +3,15 @@
   <form class="login-form" [formGroup]="loginFromGroup" (ngSubmit)="logIn()">
     <mat-form-field class="example-full-width" appearance="outline">
       <mat-label>Usuário</mat-label>
-      <input type="email" matInput formControlName="email" placeholder="Usuário">
+      <input id="login-mail" type="email" matInput formControlName="email" placeholder="Usuário">
     </mat-form-field>
 
     <mat-form-field class="example-full-width" appearance="outline">
       <mat-label>Senha</mat-label>
-      <input type="password" matInput formControlName="password" placeholder="Senha">
+      <input id="login-password" type="password" matInput formControlName="password" placeholder="Senha">
     </mat-form-field>
 
-    <button mat-raised-button color="primary" type="submit" [disabled]="!loginFromGroup.valid">Login</button>
+    <button id="login-action" mat-raised-button color="primary" type="submit" [disabled]="!loginFromGroup.valid">Login</button>
 
     <p>Ainda não possui uma conta? <a routerLink="/signup">Cadastre-se.</a></p>
   </form>

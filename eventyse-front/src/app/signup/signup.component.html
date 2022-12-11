@@ -11,20 +11,20 @@
 
     <mat-form-field class="example-full-width" appearance="outline">
       <mat-label>Usuário</mat-label>
-      <input type="email" matInput formControlName="email" placeholder="Usuário">
+      <input id="signup-mail" type="email" matInput formControlName="email" placeholder="Usuário">
     </mat-form-field>
 
     <mat-form-field class="example-full-width" appearance="outline">
       <mat-label>Nome</mat-label>
-      <input type="text" matInput formControlName="name" placeholder="Nome">
+      <input id="signup-name" type="text" matInput formControlName="name" placeholder="Nome">
     </mat-form-field>
 
     <mat-form-field class="example-full-width" appearance="outline">
       <mat-label>Senha</mat-label>
-      <input type="password" matInput formControlName="password" placeholder="Senha">
+      <input id="signup-password" type="password" matInput formControlName="password" placeholder="Senha">
     </mat-form-field>
 
-    <button mat-raised-button color="primary" type="submit" [disabled]="!signupFromGroup.valid">Cadastrar</button>
+    <button id="signup-action" mat-raised-button color="primary" type="submit" [disabled]="!signupFromGroup.valid">Cadastrar</button>
 
     <p>Já possui uma conta? <a routerLink="/login">Entre.</a></p>
   </form>
