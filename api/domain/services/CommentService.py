@@ -34,7 +34,7 @@ class CommentService(ICommentService):
 
     def find_all_by_roadmap_id(self, roadmap_id: str) -> list[Comment]:
         if not roadmap_id:
-            return MissingFieldException('missing roadmap_id field')
+            raise MissingFieldException('missing roadmap_id field')
         
         roadmap = self.roadmap_repository.find_by_id(roadmap_id)
         if not roadmap:
