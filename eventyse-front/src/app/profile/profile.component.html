@@ -11,8 +11,8 @@
         </div>
       </div>
       <div class="profile-info-actions" *ngIf="isNotUser()">
-        <button mat-raised-button color="primary" *ngIf="followStatus == false" (click)="followUser()">Seguir</button>
-        <button mat-raised-button color="warn" *ngIf="followStatus == true" (click)="unfollowUser()">Deixar de Seguir</button>
+        <button id="follow-action" mat-raised-button color="primary" *ngIf="followStatus == false" (click)="followUser()">Seguir</button>
+        <button id="unfollow-action"mat-raised-button color="warn" *ngIf="followStatus == true" (click)="unfollowUser()">Deixar de Seguir</button>
         <button mat-raised-button color="primary" disabled>Mensagem</button>
       </div>
     </div>

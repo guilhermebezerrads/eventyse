@@ -3,7 +3,25 @@ context('EVENTYSE TESTS', () => {
       cy.intercept('POST', '**/api/register', { fixture: 'register.mock.json' })
       cy.intercept('POST', '**/api/login', { fixture: 'register.mock.json' })
       cy.intercept('POST', '**/api/roadmaps', { fixture: 'create-post.mock.json' })
-      cy.intercept('GET', '**/api/roadmaps', { fixture: 'post.mock.json' })
+      cy.intercept('GET', '**/api/roadmaps', { fixture: 'posts.mock.json' })
+      cy.intercept('GET', '**/api/roadmaps/user/BCD', { fixture: 'post2.mock.json' })
+      cy.intercept('GET', '**/api/roadmaps/user/ABC', { fixture: 'post.mock.json' })
+      cy.intercept('POST', '**/api/comments/1', { fixture: 'comment.mock.json' })
+      cy.intercept('GET', '**/api/comments/1', { fixture: 'comment.mock.json' })
+      cy.intercept('DELETE', '**/api/comments/1', { fixture: 'comment.mock.json' })
+      cy.intercept('GET', '**/api/users/BCD', { fixture: 'user2.mock.json' })
+      cy.intercept('GET', '**/api/users/ABC', { fixture: 'user.mock.json' })
+      cy.intercept('GET', '**/api/users/follow/BCD', { fixture: 'check-follow.mock.json' }),
+      cy.intercept('PUT', '**/api/users/follow/BCD', { fixture: 'follow.mock.json' })
+      cy.intercept('GET', '**/api/roadmaps/like/1', { fixture: 'check-like.mock.json' })
+      cy.intercept('GET', '**/api/roadmaps/dislike/1', { fixture: 'check-like.mock.json' })
+      cy.intercept('PUT', '**/api/roadmaps/like/1', { fixture: 'like.mock.json' })
+      cy.intercept('PUT', '**/api/roadmaps/dislike/1', { fixture: 'like.mock.json' })
+      cy.intercept('GET', '**/api/roadmaps/tag/tag1', { fixture: 'post2.mock.json' })
+    })
+
+    afterEach(() => {
+        cy.wait(1000)
     })
 
     it('should be on login page', () => {
@@ -87,5 +105,102 @@ context('EVENTYSE TESTS', () => {
         cy.get('button[id="login-action"]').click()
 
         cy.location('pathname').should('include', 'dashboard')
+    })
+
+    it('should comment on a post', () => {
+        cy.visit('localhost:4200')
+
+        cy.get('input[id="login-mail"]').type("username0001_test")
+        cy.get('input[id="login-password"]').type("username0001_test")
+        cy.get('button[id="login-action"]').click()
+
+        cy.location('pathname').should('include', 'dashboard')
+
+        cy.get('.comment-input').type("este comentario é apenas um teste")
+        cy.get('.comment-action').click()
+    })
+
+    it('should comment on a post and then delete the comment', () => {
+        cy.visit('localhost:4200')
+
+        cy.get('input[id="login-mail"]').type("username0001_test")
+        cy.get('input[id="login-password"]').type("username0001_test")
+        cy.get('button[id="login-action"]').click()
+
+        cy.location('pathname').should('include', 'dashboard')
+
+        cy.get('.comment-input').type("este comentario é apenas um teste")
+        cy.get('.comment-action').click()
+
+        cy.wait(2000)
+
+        cy.get('.delete-comment-action').click()
+    })
+
+    it('should go to profile', () => {
+        cy.visit('localhost:4200')
+
+        cy.get('input[id="login-mail"]').type("username0001_test")
+        cy.get('input[id="login-password"]').type("username0001_test")
+        cy.get('button[id="login-action"]').click()
+
+        cy.get('button[id="avatar-action"]').click()
+        cy.get('button[id="avatar-profile-action"]').click()
+
+        cy.location('pathname').should('include', 'profile')
+    })
+
+    it('should follow other user profile', () => {
+        cy.visit('localhost:4200')
+
+        cy.get('input[id="login-mail"]').type("username0001_test")
+        cy.get('input[id="login-password"]').type("username0001_test")
+        cy.get('button[id="login-action"]').click()
+
+        cy.wait(1000)
+        cy.get('.post-author-link').click()
+
+        cy.location('pathname').should('include', 'profile')
+
+        cy.get('button[id="follow-action"]').click()
+    })
+
+    it('should like', () => {
+        cy.visit('localhost:4200')
+
+        cy.get('input[id="login-mail"]').type("username0001_test")
+        cy.get('input[id="login-password"]').type("username0001_test")
+        cy.get('button[id="login-action"]').click()
+
+        cy.wait(1000)
+
+        cy.get('.like-action').click()
+    })
+
+    it('should dislike', () => {
+        cy.visit('localhost:4200')
+
+        cy.get('input[id="login-mail"]').type("username0001_test")
+        cy.get('input[id="login-password"]').type("username0001_test")
+        cy.get('button[id="login-action"]').click()
+
+        cy.wait(1000)
+
+        cy.get('.dislike-action').click()
+    })
+
+    it('should filter post by tag', () => {
+        cy.visit('localhost:4200')
+
+        cy.get('input[id="login-mail"]').type("username0001_test")
+        cy.get('input[id="login-password"]').type("username0001_test")
+        cy.get('button[id="login-action"]').click()
+
+        cy.wait(1000)
+
+        cy.get('input[id="filter-input"]').type("tag1")
+        cy.get('[id="filter-form"]').submit()
+
+        cy.location('pathname').should('include', 'filterTag=tag1')
     })
 })

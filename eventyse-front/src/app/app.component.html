@@ -6,16 +6,16 @@
         <span>Eventyse</span>
       </a>
     </div>
-    <form (ngSubmit)="searchPosts()">
-      <input *ngIf="isLoggedIn" type="text" class="search" placeholder="Pesquisar por #Tag" [formControl]="searchFilterControl">
+    <form id="filter-form" (ngSubmit)="searchPosts()">
+      <input id="filter-input" *ngIf="isLoggedIn" type="text" class="search" placeholder="Pesquisar por #Tag" [formControl]="searchFilterControl">
       <input type="submit" hidden />
     </form>
-    <button *ngIf="isLoggedIn" mat-icon-button [matMenuTriggerFor]="menu" class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+    <button id="avatar-action" *ngIf="isLoggedIn" mat-icon-button [matMenuTriggerFor]="menu" class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
       <!-- <img [src]="loggedAvatar" alt="Avatar"> -->
       <ngx-avatar [name]="loggedUsername" size="40"></ngx-avatar>
     </button>
     <mat-menu #menu="matMenu" xPosition="before">
-      <button mat-menu-item [routerLink]="['profile', { id: loggedUsername }]">
+      <button id="avatar-profile-action" mat-menu-item [routerLink]="['profile', { id: loggedUsername }]">
         <mat-icon>person</mat-icon>
         <span>Perfil</span>
       </button>

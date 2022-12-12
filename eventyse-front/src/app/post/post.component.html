@@ -1,6 +1,6 @@
 <div class="container">
   <div class="title">
-    <a [routerLink]="['/profile', { id: post.author.username }]">
+    <a class="post-author-link"  [routerLink]="['/profile', { id: post.author.username }]">
       <!-- <img [src]="" alt="Avatar"> -->
       <ngx-avatar [name]="post.author.username"></ngx-avatar>
     </a>
@@ -19,11 +19,11 @@
       <button mat-icon-button [class.favorite]="isFavorite" (click)="setFavorite()">
         <mat-icon>favorite</mat-icon>
       </button>
-      <button mat-icon-button [class.liked]="isLiked" (click)="setLiked()">
+      <button class="like-action" mat-icon-button [class.liked]="isLiked" (click)="setLiked()">
         <mat-icon>thumb_up</mat-icon>
       </button>
         {{post.countLike}}
-      <button mat-icon-button [class.disliked]="isDisliked" (click)="setDisliked()">
+      <button class="dislike-action" mat-icon-button [class.disliked]="isDisliked" (click)="setDisliked()">
         <mat-icon>thumb_down</mat-icon>
       </button>
       {{post.countDislike}}
@@ -38,22 +38,22 @@
         <div class="comment-comment">
           <div>
             <span class="comment-author">
-              <a [routerLink]="['/profile', { id: comment.author }]">{{comment.author}}</a>
+              <a class="comment-author-link" [routerLink]="['/profile', { id: comment.author }]">{{comment.author}}</a>
             </span>
             <span class="comment-createDate">{{comment.createDate}}</span>
           </div>
           <span class="comment-description">{{comment.comment}}</span>
         </div>
       </div>
-      <button mat-icon-button *ngIf="myComment(comment)" (click)="deleteComment(comment)">
+      <button class="delete-comment-action" mat-icon-button *ngIf="myComment(comment)" (click)="deleteComment(comment)">
         <mat-icon>delete</mat-icon>
       </button>
     </div>
     <mat-divider></mat-divider>
   </div>
   <div class="comment-form">
-    <input matInput placeholder="Escreva um comentário" [formControl]="commentControl">
-    <button mat-icon-button (click)="comment()">
+    <input class="comment-input" matInput placeholder="Escreva um comentário" [formControl]="commentControl">
+    <button class="comment-action" mat-icon-button (click)="comment()">
       <mat-icon>send</mat-icon>
     </button>
   </div>

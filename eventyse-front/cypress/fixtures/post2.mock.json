@@ -2,17 +2,17 @@
     "roadmaps": [
         {
             "id": 1,
-            "title": "POSTAGEM DE EXEMPLO 1",
+            "title": "POSTAGEM DE EXEMPLO 2",
             "description": "Esta é uma postagem de exemplo",
             "creationDate": "01/01/2022 00:00",
-            "tags": [],
+            "tags": ["tag1", "tag2", "tag3"],
             "likes": 0,
             "dislikes": 0,
             "coordinates": [
                 [51.5, -0.09]
             ],
             "comments": [],
-            "authorUsername": "ABC"
+            "authorUsername": "BCD"
         }
     ]
 }
