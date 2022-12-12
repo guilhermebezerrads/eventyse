@@ -62,6 +62,8 @@ context('EVENTYSE TESTS', () => {
 
         cy.get('button[id="post-save-action"]').should('be.disabled')
 
+        cy.wait(2000)
+
         cy.get('.map')
         .dblclick(390, 250)
         .dblclick(400, 50);
